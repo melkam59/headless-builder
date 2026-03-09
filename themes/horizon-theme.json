@@ -49,7 +49,7 @@
           "type": "image",
           "id": "logoImage",
           "label": "Logo Image",
-          "defaultValue": "/images/logo.svg"
+          "defaultValue": ""
         },
         "logoWidth": {
           "type": "number",
@@ -143,7 +143,7 @@
           "type": "image",
           "id": "backgroundImage",
           "label": "Background Image",
-          "defaultValue": "/images/hero-bg.jpg"
+          "defaultValue": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600&h=900&fit=crop"
         },
         "overlayOpacity": {
           "type": "number",
@@ -334,7 +334,7 @@
               "type": "image",
               "id": "image",
               "label": "Collection Image",
-              "defaultValue": "/images/collection-women.jpg"
+              "defaultValue": "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&h=600&fit=crop"
             },
             "title": {
               "type": "text",
@@ -357,7 +357,7 @@
               "type": "image",
               "id": "image",
               "label": "Collection Image",
-              "defaultValue": "/images/collection-men.jpg"
+              "defaultValue": "https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?w=600&h=600&fit=crop"
             },
             "title": {
               "type": "text",
@@ -380,7 +380,7 @@
               "type": "image",
               "id": "image",
               "label": "Collection Image",
-              "defaultValue": "/images/collection-accessories.jpg"
+              "defaultValue": "https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93?w=600&h=600&fit=crop"
             },
             "title": {
               "type": "text",
@@ -454,7 +454,7 @@
           "type": "image",
           "id": "image",
           "label": "Image",
-          "defaultValue": "/images/about.jpg"
+          "defaultValue": "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800&h=800&fit=crop"
         },
         "imageRatio": {
           "type": "select",
@@ -569,7 +569,7 @@
               "type": "image",
               "id": "avatar",
               "label": "Avatar Image",
-              "defaultValue": "/images/avatars/avatar1.jpg"
+              "defaultValue": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop"
             },
             "rating": {
               "type": "number",
@@ -598,7 +598,7 @@
               "type": "image",
               "id": "avatar",
               "label": "Avatar Image",
-              "defaultValue": "/images/avatars/avatar2.jpg"
+              "defaultValue": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop"
             },
             "rating": {
               "type": "number",
@@ -627,7 +627,7 @@
               "type": "image",
               "id": "avatar",
               "label": "Avatar Image",
-              "defaultValue": "/images/avatars/avatar3.jpg"
+              "defaultValue": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop"
             },
             "rating": {
               "type": "number",
