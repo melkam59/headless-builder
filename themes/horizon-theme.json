@@ -1,0 +1,803 @@
+{
+  "sections": [
+    {
+      "type": "announcementBar",
+      "settings": {
+        "enabled": {
+          "type": "checkbox",
+          "id": "enabled",
+          "label": "Enable Announcement Bar",
+          "defaultValue": true
+        },
+        "backgroundColor": {
+          "type": "color",
+          "id": "backgroundColor",
+          "label": "Background Color",
+          "defaultValue": "#000000"
+        },
+        "textColor": {
+          "type": "color",
+          "id": "textColor",
+          "label": "Text Color",
+          "defaultValue": "#ffffff"
+        }
+      },
+      "blocks": [
+        {
+          "type": "announcement",
+          "settings": {
+            "text": {
+              "type": "text",
+              "id": "text",
+              "label": "Announcement Text",
+              "defaultValue": "Free shipping on orders over $50"
+            },
+            "link": {
+              "type": "url",
+              "id": "link",
+              "label": "Link URL",
+              "defaultValue": ""
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "settings": {
+        "logoImage": {
+          "type": "image",
+          "id": "logoImage",
+          "label": "Logo Image",
+          "defaultValue": "/images/logo.svg"
+        },
+        "logoWidth": {
+          "type": "number",
+          "id": "logoWidth",
+          "label": "Logo Width (px)",
+          "defaultValue": 120
+        },
+        "transparentHeader": {
+          "type": "checkbox",
+          "id": "transparentHeader",
+          "label": "Transparent Header",
+          "defaultValue": false
+        },
+        "stickyHeader": {
+          "type": "checkbox",
+          "id": "stickyHeader",
+          "label": "Sticky Header on Scroll",
+          "defaultValue": true
+        }
+      },
+      "blocks": [
+        {
+          "type": "menuItem",
+          "settings": {
+            "label": {
+              "type": "text",
+              "id": "label",
+              "label": "Menu Label",
+              "defaultValue": "Shop"
+            },
+            "link": {
+              "type": "url",
+              "id": "link",
+              "label": "Link URL",
+              "defaultValue": "/collections/all"
+            }
+          },
+          "blocks": [
+            {
+              "type": "submenuItem",
+              "settings": {
+                "label": {
+                  "type": "text",
+                  "id": "label",
+                  "label": "Submenu Label",
+                  "defaultValue": "New Arrivals"
+                },
+                "link": {
+                  "type": "url",
+                  "id": "link",
+                  "label": "Link URL",
+                  "defaultValue": "/collections/new"
+                },
+                "image": {
+                  "type": "image",
+                  "id": "image",
+                  "label": "Featured Image",
+                  "defaultValue": ""
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "hero",
+      "settings": {
+        "layout": {
+          "type": "select",
+          "id": "layout",
+          "label": "Layout Style",
+          "options": ["full-width", "contained", "split"],
+          "defaultValue": "full-width"
+        },
+        "height": {
+          "type": "select",
+          "id": "height",
+          "label": "Section Height",
+          "options": ["small", "medium", "large", "full-screen"],
+          "defaultValue": "large"
+        },
+        "mobileHeight": {
+          "type": "select",
+          "id": "mobileHeight",
+          "label": "Mobile Height",
+          "options": ["small", "medium", "large"],
+          "defaultValue": "medium"
+        },
+        "backgroundImage": {
+          "type": "image",
+          "id": "backgroundImage",
+          "label": "Background Image",
+          "defaultValue": "/images/hero-bg.jpg"
+        },
+        "overlayOpacity": {
+          "type": "number",
+          "id": "overlayOpacity",
+          "label": "Overlay Opacity (0-100)",
+          "defaultValue": 30
+        }
+      },
+      "blocks": [
+        {
+          "type": "group",
+          "settings": {
+            "alignment": {
+              "type": "select",
+              "id": "alignment",
+              "label": "Content Alignment",
+              "options": ["left", "center", "right"],
+              "defaultValue": "center"
+            },
+            "verticalAlignment": {
+              "type": "select",
+              "id": "verticalAlignment",
+              "label": "Vertical Alignment",
+              "options": ["top", "center", "bottom"],
+              "defaultValue": "center"
+            },
+            "maxWidth": {
+              "type": "number",
+              "id": "maxWidth",
+              "label": "Max Width (px)",
+              "defaultValue": 600
+            }
+          },
+          "blocks": [
+            {
+              "type": "heading",
+              "settings": {
+                "text": {
+                  "type": "text",
+                  "id": "text",
+                  "label": "Heading Text",
+                  "defaultValue": "Discover Your Style"
+                },
+                "size": {
+                  "type": "select",
+                  "id": "size",
+                  "label": "Heading Size",
+                  "options": ["small", "medium", "large", "xlarge"],
+                  "defaultValue": "xlarge"
+                },
+                "color": {
+                  "type": "color",
+                  "id": "color",
+                  "label": "Text Color",
+                  "defaultValue": "#ffffff"
+                }
+              }
+            },
+            {
+              "type": "text",
+              "settings": {
+                "text": {
+                  "type": "text",
+                  "id": "text",
+                  "label": "Subtext",
+                  "defaultValue": "Explore our curated collection of premium products"
+                },
+                "size": {
+                  "type": "select",
+                  "id": "size",
+                  "label": "Text Size",
+                  "options": ["small", "medium", "large"],
+                  "defaultValue": "medium"
+                },
+                "color": {
+                  "type": "color",
+                  "id": "color",
+                  "label": "Text Color",
+                  "defaultValue": "#ffffff"
+                }
+              }
+            },
+            {
+              "type": "buttonGroup",
+              "settings": {
+                "spacing": {
+                  "type": "number",
+                  "id": "spacing",
+                  "label": "Button Spacing (px)",
+                  "defaultValue": 16
+                }
+              },
+              "blocks": [
+                {
+                  "type": "button",
+                  "settings": {
+                    "label": {
+                      "type": "text",
+                      "id": "label",
+                      "label": "Button Label",
+                      "defaultValue": "Shop Now"
+                    },
+                    "link": {
+                      "type": "url",
+                      "id": "link",
+                      "label": "Button Link",
+                      "defaultValue": "/collections/all"
+                    },
+                    "style": {
+                      "type": "select",
+                      "id": "style",
+                      "label": "Button Style",
+                      "options": ["primary", "secondary", "outline"],
+                      "defaultValue": "primary"
+                    }
+                  }
+                },
+                {
+                  "type": "button",
+                  "settings": {
+                    "label": {
+                      "type": "text",
+                      "id": "label",
+                      "label": "Button Label",
+                      "defaultValue": "Learn More"
+                    },
+                    "link": {
+                      "type": "url",
+                      "id": "link",
+                      "label": "Button Link",
+                      "defaultValue": "/pages/about"
+                    },
+                    "style": {
+                      "type": "select",
+                      "id": "style",
+                      "label": "Button Style",
+                      "options": ["primary", "secondary", "outline"],
+                      "defaultValue": "outline"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "collectionList",
+      "settings": {
+        "heading": {
+          "type": "text",
+          "id": "heading",
+          "label": "Section Heading",
+          "defaultValue": "Shop by Category"
+        },
+        "layout": {
+          "type": "select",
+          "id": "layout",
+          "label": "Layout Style",
+          "options": ["grid", "carousel"],
+          "defaultValue": "grid"
+        },
+        "columns": {
+          "type": "number",
+          "id": "columns",
+          "label": "Columns (Desktop)",
+          "defaultValue": 3
+        },
+        "mobileColumns": {
+          "type": "number",
+          "id": "mobileColumns",
+          "label": "Columns (Mobile)",
+          "defaultValue": 2
+        }
+      },
+      "blocks": [
+        {
+          "type": "collection",
+          "settings": {
+            "collectionId": {
+              "type": "text",
+              "id": "collectionId",
+              "label": "Collection ID",
+              "defaultValue": "women"
+            },
+            "image": {
+              "type": "image",
+              "id": "image",
+              "label": "Collection Image",
+              "defaultValue": "/images/collection-women.jpg"
+            },
+            "title": {
+              "type": "text",
+              "id": "title",
+              "label": "Collection Title",
+              "defaultValue": "Women's Fashion"
+            }
+          }
+        },
+        {
+          "type": "collection",
+          "settings": {
+            "collectionId": {
+              "type": "text",
+              "id": "collectionId",
+              "label": "Collection ID",
+              "defaultValue": "men"
+            },
+            "image": {
+              "type": "image",
+              "id": "image",
+              "label": "Collection Image",
+              "defaultValue": "/images/collection-men.jpg"
+            },
+            "title": {
+              "type": "text",
+              "id": "title",
+              "label": "Collection Title",
+              "defaultValue": "Men's Fashion"
+            }
+          }
+        },
+        {
+          "type": "collection",
+          "settings": {
+            "collectionId": {
+              "type": "text",
+              "id": "collectionId",
+              "label": "Collection ID",
+              "defaultValue": "accessories"
+            },
+            "image": {
+              "type": "image",
+              "id": "image",
+              "label": "Collection Image",
+              "defaultValue": "/images/collection-accessories.jpg"
+            },
+            "title": {
+              "type": "text",
+              "id": "title",
+              "label": "Collection Title",
+              "defaultValue": "Accessories"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "productGrid",
+      "settings": {
+        "heading": {
+          "type": "text",
+          "id": "heading",
+          "label": "Section Heading",
+          "defaultValue": "Featured Products"
+        },
+        "collectionId": {
+          "type": "text",
+          "id": "collectionId",
+          "label": "Collection ID",
+          "defaultValue": "featured"
+        },
+        "numberOfProducts": {
+          "type": "number",
+          "id": "numberOfProducts",
+          "label": "Number of Products",
+          "defaultValue": 8
+        },
+        "columns": {
+          "type": "number",
+          "id": "columns",
+          "label": "Columns (Desktop)",
+          "defaultValue": 4
+        },
+        "mobileColumns": {
+          "type": "number",
+          "id": "mobileColumns",
+          "label": "Columns (Mobile)",
+          "defaultValue": 2
+        },
+        "showQuickAdd": {
+          "type": "checkbox",
+          "id": "showQuickAdd",
+          "label": "Show Quick Add Button",
+          "defaultValue": true
+        },
+        "cardStyle": {
+          "type": "select",
+          "id": "cardStyle",
+          "label": "Product Card Style",
+          "options": ["standard", "minimal", "overlay"],
+          "defaultValue": "standard"
+        }
+      }
+    },
+    {
+      "type": "imageWithText",
+      "settings": {
+        "layout": {
+          "type": "select",
+          "id": "layout",
+          "label": "Layout",
+          "options": ["image-left", "image-right"],
+          "defaultValue": "image-left"
+        },
+        "image": {
+          "type": "image",
+          "id": "image",
+          "label": "Image",
+          "defaultValue": "/images/about.jpg"
+        },
+        "imageRatio": {
+          "type": "select",
+          "id": "imageRatio",
+          "label": "Image Ratio",
+          "options": ["square", "portrait", "landscape"],
+          "defaultValue": "square"
+        }
+      },
+      "blocks": [
+        {
+          "type": "group",
+          "settings": {
+            "padding": {
+              "type": "number",
+              "id": "padding",
+              "label": "Content Padding (px)",
+              "defaultValue": 48
+            }
+          },
+          "blocks": [
+            {
+              "type": "heading",
+              "settings": {
+                "text": {
+                  "type": "text",
+                  "id": "text",
+                  "label": "Heading",
+                  "defaultValue": "Crafted with Care"
+                },
+                "size": {
+                  "type": "select",
+                  "id": "size",
+                  "label": "Heading Size",
+                  "options": ["small", "medium", "large"],
+                  "defaultValue": "large"
+                }
+              }
+            },
+            {
+              "type": "text",
+              "settings": {
+                "text": {
+                  "type": "text",
+                  "id": "text",
+                  "label": "Text Content",
+                  "defaultValue": "Every product is carefully selected and crafted to meet our high standards of quality and sustainability."
+                }
+              }
+            },
+            {
+              "type": "button",
+              "settings": {
+                "label": {
+                  "type": "text",
+                  "id": "label",
+                  "label": "Button Label",
+                  "defaultValue": "Our Story"
+                },
+                "link": {
+                  "type": "url",
+                  "id": "link",
+                  "label": "Button Link",
+                  "defaultValue": "/pages/about"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "testimonials",
+      "settings": {
+        "heading": {
+          "type": "text",
+          "id": "heading",
+          "label": "Section Heading",
+          "defaultValue": "What Our Customers Say"
+        },
+        "layout": {
+          "type": "select",
+          "id": "layout",
+          "label": "Layout Style",
+          "options": ["grid", "carousel"],
+          "defaultValue": "carousel"
+        },
+        "backgroundColor": {
+          "type": "color",
+          "id": "backgroundColor",
+          "label": "Background Color",
+          "defaultValue": "#f9f9f9"
+        }
+      },
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": {
+              "type": "text",
+              "id": "quote",
+              "label": "Testimonial Quote",
+              "defaultValue": "Absolutely love the quality and style. Fast shipping and excellent customer service!"
+            },
+            "name": {
+              "type": "text",
+              "id": "name",
+              "label": "Customer Name",
+              "defaultValue": "Sarah Johnson"
+            },
+            "avatar": {
+              "type": "image",
+              "id": "avatar",
+              "label": "Avatar Image",
+              "defaultValue": "/images/avatars/avatar1.jpg"
+            },
+            "rating": {
+              "type": "number",
+              "id": "rating",
+              "label": "Star Rating (1-5)",
+              "defaultValue": 5
+            }
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": {
+              "type": "text",
+              "id": "quote",
+              "label": "Testimonial Quote",
+              "defaultValue": "Best online shopping experience. The products exceeded my expectations!"
+            },
+            "name": {
+              "type": "text",
+              "id": "name",
+              "label": "Customer Name",
+              "defaultValue": "Michael Chen"
+            },
+            "avatar": {
+              "type": "image",
+              "id": "avatar",
+              "label": "Avatar Image",
+              "defaultValue": "/images/avatars/avatar2.jpg"
+            },
+            "rating": {
+              "type": "number",
+              "id": "rating",
+              "label": "Star Rating (1-5)",
+              "defaultValue": 5
+            }
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": {
+              "type": "text",
+              "id": "quote",
+              "label": "Testimonial Quote",
+              "defaultValue": "Sustainable, stylish, and affordable. What more could you ask for?"
+            },
+            "name": {
+              "type": "text",
+              "id": "name",
+              "label": "Customer Name",
+              "defaultValue": "Emily Rodriguez"
+            },
+            "avatar": {
+              "type": "image",
+              "id": "avatar",
+              "label": "Avatar Image",
+              "defaultValue": "/images/avatars/avatar3.jpg"
+            },
+            "rating": {
+              "type": "number",
+              "id": "rating",
+              "label": "Star Rating (1-5)",
+              "defaultValue": 5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "settings": {
+        "heading": {
+          "type": "text",
+          "id": "heading",
+          "label": "Section Heading",
+          "defaultValue": "Stay in the Loop"
+        },
+        "subtext": {
+          "type": "text",
+          "id": "subtext",
+          "label": "Subtext",
+          "defaultValue": "Subscribe to get special offers, free giveaways, and updates."
+        },
+        "buttonLabel": {
+          "type": "text",
+          "id": "buttonLabel",
+          "label": "Button Label",
+          "defaultValue": "Subscribe"
+        },
+        "backgroundColor": {
+          "type": "color",
+          "id": "backgroundColor",
+          "label": "Background Color",
+          "defaultValue": "#000000"
+        },
+        "textColor": {
+          "type": "color",
+          "id": "textColor",
+          "label": "Text Color",
+          "defaultValue": "#ffffff"
+        }
+      }
+    },
+    {
+      "type": "footer",
+      "settings": {
+        "backgroundColor": {
+          "type": "color",
+          "id": "backgroundColor",
+          "label": "Background Color",
+          "defaultValue": "#1a1a1a"
+        },
+        "textColor": {
+          "type": "color",
+          "id": "textColor",
+          "label": "Text Color",
+          "defaultValue": "#ffffff"
+        },
+        "showSocialIcons": {
+          "type": "checkbox",
+          "id": "showSocialIcons",
+          "label": "Show Social Icons",
+          "defaultValue": true
+        },
+        "copyrightText": {
+          "type": "text",
+          "id": "copyrightText",
+          "label": "Copyright Text",
+          "defaultValue": "© 2026 My Store. All rights reserved."
+        }
+      },
+      "blocks": [
+        {
+          "type": "menuColumn",
+          "settings": {
+            "heading": {
+              "type": "text",
+              "id": "heading",
+              "label": "Column Heading",
+              "defaultValue": "Shop"
+            }
+          },
+          "blocks": [
+            {
+              "type": "link",
+              "settings": {
+                "label": {
+                  "type": "text",
+                  "id": "label",
+                  "label": "Link Label",
+                  "defaultValue": "All Products"
+                },
+                "url": {
+                  "type": "url",
+                  "id": "url",
+                  "label": "Link URL",
+                  "defaultValue": "/collections/all"
+                }
+              }
+            },
+            {
+              "type": "link",
+              "settings": {
+                "label": {
+                  "type": "text",
+                  "id": "label",
+                  "label": "Link Label",
+                  "defaultValue": "New Arrivals"
+                },
+                "url": {
+                  "type": "url",
+                  "id": "url",
+                  "label": "Link URL",
+                  "defaultValue": "/collections/new"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "menuColumn",
+          "settings": {
+            "heading": {
+              "type": "text",
+              "id": "heading",
+              "label": "Column Heading",
+              "defaultValue": "About"
+            }
+          },
+          "blocks": [
+            {
+              "type": "link",
+              "settings": {
+                "label": {
+                  "type": "text",
+                  "id": "label",
+                  "label": "Link Label",
+                  "defaultValue": "Our Story"
+                },
+                "url": {
+                  "type": "url",
+                  "id": "url",
+                  "label": "Link URL",
+                  "defaultValue": "/pages/about"
+                }
+              }
+            },
+            {
+              "type": "link",
+              "settings": {
+                "label": {
+                  "type": "text",
+                  "id": "label",
+                  "label": "Link Label",
+                  "defaultValue": "Contact"
+                },
+                "url": {
+                  "type": "url",
+                  "id": "url",
+                  "label": "Link URL",
+                  "defaultValue": "/pages/contact"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
