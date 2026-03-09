@@ -15,6 +15,7 @@ import themeData from '@/themes/horizon-theme.json';
 export default function PreviewPage() {
   const [sections, setSections] = useState(themeData.sections);
   const [logoSettings, setLogoSettings] = useState<any>({
+    storeName: 'My Store',
     image: '',
     width: 120,
     hideOnHomePage: false,
@@ -26,7 +27,24 @@ export default function PreviewPage() {
   const [heroSettings, setHeroSettings] = useState<any>(null);
 
   useEffect(() => {
-    // Listen for updates from editor
+    // Fetch initial theme on mount so we don't start with the default JSON template
+    const fetchTheme = async () => {
+      try {
+        const res = await fetch('/api/themes');
+        const data = await res.json();
+        if (data.settings) {
+          if (data.settings.logo) setLogoSettings(data.settings.logo);
+          if (data.settings.header) setHeaderSettings(data.settings.header);
+          if (data.settings.menu) setMenuItems(data.settings.menu);
+          if (data.settings.hero) setHeroSettings(data.settings.hero);
+        }
+      } catch (e) {
+        console.error('Preview failed to fetch theme:', e);
+      }
+    };
+    fetchTheme();
+
+    // Listen for real-time updates from editor
     const handleMessage = (event: MessageEvent) => {
       if (event.data.type === 'UPDATE_THEME') {
         const { section, settings } = event.data;
@@ -51,27 +69,32 @@ export default function PreviewPage() {
   const updatedSections = sections.map(section => {
     if (section.type === 'header') {
       // Convert menu items to blocks format
-      const menuBlocks = menuItems.length > 0 ? menuItems.map(item => ({
-        type: 'menuItem',
-        settings: {
-          label: { defaultValue: item.label },
-          link: { defaultValue: item.link },
-        },
-        blocks: item.submenu?.map((sub: any) => ({
-          type: 'submenuItem',
+      const menuBlocks = menuItems.length > 0 ? menuItems
+        .filter(item => item.visible !== false) // Only show visible items
+        .map(item => ({
+          type: 'menuItem',
           settings: {
-            label: { defaultValue: sub.label },
-            link: { defaultValue: sub.link },
-            image: { defaultValue: '' },
+            label: { defaultValue: item.label },
+            link: { defaultValue: item.link },
           },
-        })) || [],
-      })) : section.blocks;
+          blocks: item.submenu
+            ?.filter((sub: any) => sub.visible !== false) // Only show visible submenu items
+            .map((sub: any) => ({
+              type: 'submenuItem',
+              settings: {
+                label: { defaultValue: sub.label },
+                link: { defaultValue: sub.link },
+                image: { defaultValue: '' },
+              },
+            })) || [],
+        })) : section.blocks;
 
       return {
         ...section,
         blocks: menuBlocks,
         settings: {
           ...section.settings,
+          storeName: logoSettings.storeName,
           logoImage: { ...section.settings.logoImage, defaultValue: logoSettings.image },
           logoWidth: { ...section.settings.logoWidth, defaultValue: logoSettings.width },
           logoPosition: logoSettings.position,

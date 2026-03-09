@@ -1,5 +1,6 @@
 'use client';
 
+import { MousePointer2 } from 'lucide-react';
 import LogoSettings from './settings/LogoSettings';
 import HeaderSettings from './settings/HeaderSettings';
 import HeroSettings from './settings/HeroSettings';
@@ -11,52 +12,34 @@ interface SettingsPanelProps {
   onUpdate: (updates: any) => void;
 }
 
-export default function SettingsPanel({
-  selectedItem,
-  settings,
-  onUpdate,
-}: SettingsPanelProps) {
+const sectionLabel = (key: string) =>
+  key.replace(/([A-Z])/g, ' $1').replace(/^\w/, (c) => c.toUpperCase()).trim();
+
+export default function SettingsPanel({ selectedItem, settings, onUpdate }: SettingsPanelProps) {
   if (!selectedItem) {
     return (
-      <div className="text-center py-12">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-12 h-12 mx-auto text-gray-400 mb-4"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
-          />
-        </svg>
-        <p className="text-sm text-gray-600">
-          Select a section to customize
-        </p>
+      <div className="flex flex-col items-center justify-center h-full py-16 text-center px-6">
+        <div className="w-12 h-12 rounded-xl bg-zinc-100 flex items-center justify-center mb-3">
+          <MousePointer2 className="w-5 h-5 text-zinc-400" />
+        </div>
+        <p className="text-sm font-medium text-zinc-700">Nothing selected</p>
+        <p className="text-xs text-zinc-400 mt-1">Click a section on the left to edit its settings</p>
       </div>
     );
   }
 
-  // Route to appropriate settings component
   switch (selectedItem) {
     case 'logo':
       return (
         <LogoSettings
           settings={settings.logo}
           onUpdate={(updates) => onUpdate({ logo: { ...settings.logo, ...updates } })}
-          onUpdatePadding={(side, value) => 
-            onUpdate({ 
-              logo: { 
-                ...settings.logo, 
-                padding: { ...settings.logo.padding, [side]: value } 
-              } 
-            })
+          onUpdatePadding={(side, value) =>
+            onUpdate({ logo: { ...settings.logo, padding: { ...settings.logo.padding, [side]: value } } })
           }
         />
       );
+
     case 'header':
     case 'headerMain':
       return (
@@ -65,6 +48,7 @@ export default function SettingsPanel({
           onUpdate={(updates) => onUpdate({ header: { ...settings.header, ...updates } })}
         />
       );
+
     case 'menu':
       return (
         <MenuSettings
@@ -72,6 +56,7 @@ export default function SettingsPanel({
           onUpdate={(menuItems) => onUpdate({ menu: menuItems })}
         />
       );
+
     case 'hero':
       return (
         <HeroSettings
@@ -79,31 +64,29 @@ export default function SettingsPanel({
           onUpdate={(updates) => onUpdate({ hero: { ...settings.hero, ...updates } })}
         />
       );
+
     case 'announcementBar':
     case 'collectionList':
     case 'productGrid':
     case 'footer':
       return (
-        <div>
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            {selectedItem.replace(/([A-Z])/g, ' $1').trim()}
-          </h2>
-          <p className="text-sm text-gray-600">
-            Settings for this section coming soon...
-          </p>
+        <div className="space-y-3">
+          <div>
+            <h2 className="text-sm font-semibold text-zinc-900">{sectionLabel(selectedItem)}</h2>
+            <p className="text-xs text-zinc-500 mt-0.5">Settings coming soon</p>
+          </div>
+          <div className="rounded-lg bg-zinc-50 border border-zinc-200 p-4 text-xs text-zinc-500">
+            This section will have customizable settings in a future update.
+          </div>
         </div>
       );
+
     default:
       return (
-        <div>
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            {selectedItem}
-          </h2>
-          <p className="text-sm text-gray-600">
-            Settings panel not configured yet.
-          </p>
+        <div className="space-y-3">
+          <h2 className="text-sm font-semibold text-zinc-900">{sectionLabel(selectedItem)}</h2>
+          <p className="text-xs text-zinc-500">No settings configured for this item yet.</p>
         </div>
       );
   }
 }
-

@@ -24,6 +24,7 @@ export default function Header({ settings, blocks = [] }: HeaderProps) {
   const logoPadding = settings.logoPadding || { top: 24, bottom: 26, left: 4, right: 0 };
   const transparentHeader = settings.transparentHeader?.defaultValue || false;
   const stickyHeader = settings.stickyHeader?.defaultValue || true;
+  const storeName = settings.storeName || 'My Store';
 
   useEffect(() => {
     if (!stickyHeader) return;
@@ -46,7 +47,7 @@ export default function Header({ settings, blocks = [] }: HeaderProps) {
   return (
     <header className={headerClasses}>
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center h-16 relative">
+        <div className="flex items-center justify-between h-16 gap-8">
           {/* Left Position: Logo left, Menu right */}
           {logoPosition === 'left' && (
             <>
@@ -55,23 +56,25 @@ export default function Header({ settings, blocks = [] }: HeaderProps) {
                   {logoImage ? (
                     <img
                       src={logoImage}
-                      alt="Logo"
-                      style={{ 
+                      alt={storeName}
+                      style={{
                         width: `${logoWidth}px`,
+                        height: 'auto',
+                        maxHeight: `${logoWidth}px`,
                         marginTop: `${logoPadding.top}px`,
                         marginBottom: `${logoPadding.bottom}px`,
                         marginLeft: `${logoPadding.left}px`,
                         marginRight: `${logoPadding.right}px`,
+                        objectFit: 'contain',
+                        display: 'block',
                       }}
-                      className="h-auto"
                     />
                   ) : (
-                    <span className="text-2xl font-bold text-gray-900">Store</span>
+                    <span className="text-2xl font-bold text-gray-900">{storeName}</span>
                   )}
                 </a>
               </div>
-              <div className="flex-1" />
-              <div className="hidden md:flex md:items-center md:space-x-8">
+              <div className="hidden md:flex md:items-center md:gap-6 flex-wrap">
                 {blocks.map((block, index) => (
                   <MenuItemRenderer key={index} block={block} />
                 ))}
@@ -82,64 +85,69 @@ export default function Header({ settings, blocks = [] }: HeaderProps) {
           {/* Center Position: Logo and Menu side by side in center */}
           {logoPosition === 'center' && (
             <>
-              <div className="flex-1" />
-              <div className="flex items-center gap-8">
+              <div className="flex-1 min-w-0" />
+              <div className="flex items-center gap-6 flex-shrink-0">
                 <div className="flex-shrink-0">
                   <a href="/">
                     {logoImage ? (
                       <img
                         src={logoImage}
-                        alt="Logo"
-                        style={{ 
+                        alt={storeName}
+                        style={{
                           width: `${logoWidth}px`,
+                          height: 'auto',
+                          maxHeight: `${logoWidth}px`,
                           marginTop: `${logoPadding.top}px`,
                           marginBottom: `${logoPadding.bottom}px`,
                           marginLeft: `${logoPadding.left}px`,
                           marginRight: `${logoPadding.right}px`,
+                          objectFit: 'contain',
+                          display: 'block',
                         }}
-                        className="h-auto"
                       />
                     ) : (
-                      <span className="text-2xl font-bold text-gray-900">Store</span>
+                      <span className="text-2xl font-bold text-gray-900">{storeName}</span>
                     )}
                   </a>
                 </div>
-                <div className="hidden md:flex md:items-center md:space-x-8">
+                <div className="hidden md:flex md:items-center md:gap-6">
                   {blocks.map((block, index) => (
                     <MenuItemRenderer key={index} block={block} />
                   ))}
                 </div>
               </div>
-              <div className="flex-1" />
+              <div className="flex-1 min-w-0" />
             </>
           )}
 
           {/* Right Position: Menu left, Logo right */}
           {logoPosition === 'right' && (
             <>
-              <div className="hidden md:flex md:items-center md:space-x-8">
+              <div className="hidden md:flex md:items-center md:gap-6 flex-wrap">
                 {blocks.map((block, index) => (
                   <MenuItemRenderer key={index} block={block} />
                 ))}
               </div>
-              <div className="flex-1" />
               <div className="flex-shrink-0">
                 <a href="/">
                   {logoImage ? (
                     <img
                       src={logoImage}
-                      alt="Logo"
-                      style={{ 
+                      alt={storeName}
+                      style={{
                         width: `${logoWidth}px`,
+                        height: 'auto',
+                        maxHeight: `${logoWidth}px`,
                         marginTop: `${logoPadding.top}px`,
                         marginBottom: `${logoPadding.bottom}px`,
                         marginLeft: `${logoPadding.left}px`,
                         marginRight: `${logoPadding.right}px`,
+                        objectFit: 'contain',
+                        display: 'block',
                       }}
-                      className="h-auto"
                     />
                   ) : (
-                    <span className="text-2xl font-bold text-gray-900">Store</span>
+                    <span className="text-2xl font-bold text-gray-900">{storeName}</span>
                   )}
                 </a>
               </div>

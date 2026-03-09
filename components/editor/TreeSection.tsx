@@ -1,6 +1,12 @@
+'use client';
+
+import React from 'react';
+import { ChevronRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
 interface TreeSectionProps {
   title: string;
-  icon: string;
+  icon?: React.ReactNode;
   isExpanded: boolean;
   onToggle: () => void;
   isSelected: boolean;
@@ -20,36 +26,34 @@ export default function TreeSection({
   return (
     <div>
       <div
-        className={`flex items-center justify-between px-2 py-1.5 rounded cursor-pointer hover:bg-gray-50 ${
-          isSelected ? 'bg-gray-100' : ''
-        }`}
         onClick={onSelect}
+        className={cn(
+          'group flex items-center gap-1.5 px-2 py-1.5 rounded-md cursor-pointer text-sm transition-colors',
+          isSelected
+            ? 'bg-violet-50 text-violet-700 font-medium'
+            : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900'
+        )}
       >
-        <div className="flex items-center flex-1">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onToggle();
-            }}
-            className="p-0.5 hover:bg-gray-200 rounded mr-1"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className={`w-3 h-3 text-gray-500 transition-transform ${isExpanded ? 'rotate-90' : ''}`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 mr-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-          <span className="text-sm font-medium text-gray-700">{title}</span>
-        </div>
+        <button
+          onClick={(e) => { e.stopPropagation(); onToggle(); }}
+          className="p-0.5 rounded hover:bg-zinc-200 transition-colors shrink-0"
+        >
+          <ChevronRight
+            className={cn(
+              'w-3.5 h-3.5 transition-transform text-zinc-400',
+              isExpanded && 'rotate-90',
+              isSelected && 'text-violet-500'
+            )}
+          />
+        </button>
+        {icon && <span className={cn('shrink-0', isSelected ? 'text-violet-500' : 'text-zinc-400')}>{icon}</span>}
+        <span className="truncate">{title}</span>
       </div>
-      {isExpanded && children && <div className="ml-4 mt-1">{children}</div>}
+      {isExpanded && children && (
+        <div className="ml-3 mt-0.5 border-l border-zinc-200 pl-2 space-y-0.5">
+          {children}
+        </div>
+      )}
     </div>
   );
 }

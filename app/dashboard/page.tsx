@@ -1,143 +1,150 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import {
+  Store, FileText, Settings, Zap, ExternalLink, LayoutTemplate,
+  ChevronRight, Globe,
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+type Section = 'themes' | 'pages' | 'preferences';
+
+const navItems: { id: Section; label: string; icon: React.ReactNode }[] = [
+  { id: 'themes', label: 'Themes', icon: <LayoutTemplate className="w-4 h-4" /> },
+  { id: 'pages', label: 'Pages', icon: <FileText className="w-4 h-4" /> },
+  { id: 'preferences', label: 'Preferences', icon: <Settings className="w-4 h-4" /> },
+];
 
 export default function DashboardPage() {
-  const [activeSection, setActiveSection] = useState('themes');
+  const [activeSection, setActiveSection] = useState<Section>('themes');
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-zinc-50 overflow-hidden">
       {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-gray-200">
-        <div className="p-4">
-          <h1 className="text-xl font-bold text-gray-900">My Store</h1>
+      <aside className="w-60 bg-white border-r border-zinc-200 flex flex-col shadow-sm">
+        {/* Brand */}
+        <div className="px-4 py-4 border-b border-zinc-100">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-md bg-violet-600 flex items-center justify-center">
+              <Zap className="w-3.5 h-3.5 text-white" />
+            </div>
+            <span className="font-bold text-zinc-900 text-sm">My Store</span>
+          </div>
         </div>
 
-        <nav className="px-2 py-4">
-          {/* Sales channels */}
-          <div className="mb-6">
-            <div className="px-3 mb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider flex items-center justify-between">
-              Sales channels
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
+        <ScrollArea className="flex-1">
+          <nav className="p-2 space-y-0.5">
+            {/* Sales channels */}
+            <div className="px-2 pt-3 pb-1 text-xs font-semibold text-zinc-400 uppercase tracking-wider flex items-center gap-1.5">
+              <Globe className="w-3.5 h-3.5" /> Sales channels
             </div>
 
-            {/* Online Store */}
-            <div className="mb-2">
-              <button className="w-full flex items-center px-3 py-2 text-sm font-medium text-gray-900 rounded-md hover:bg-gray-100">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5 mr-3"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                  />
-                </svg>
+            <div className="mb-1">
+              <div className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-zinc-800 rounded-md bg-zinc-100">
+                <Store className="w-4 h-4 text-zinc-500" />
                 Online Store
-              </button>
+                <ChevronRight className="w-3.5 h-3.5 ml-auto text-zinc-400" />
+              </div>
 
-              {/* Themes submenu */}
-              <div className="ml-8 mt-1">
-                <button
-                  onClick={() => setActiveSection('themes')}
-                  className={`w-full text-left px-3 py-2 text-sm rounded-md ${
-                    activeSection === 'themes'
-                      ? 'bg-gray-100 text-gray-900 font-medium'
-                      : 'text-gray-600 hover:bg-gray-50'
-                  }`}
-                >
-                  Themes
-                </button>
-                <button
-                  onClick={() => setActiveSection('pages')}
-                  className={`w-full text-left px-3 py-2 text-sm rounded-md ${
-                    activeSection === 'pages'
-                      ? 'bg-gray-100 text-gray-900 font-medium'
-                      : 'text-gray-600 hover:bg-gray-50'
-                  }`}
-                >
-                  Pages
-                </button>
-                <button
-                  onClick={() => setActiveSection('preferences')}
-                  className={`w-full text-left px-3 py-2 text-sm rounded-md ${
-                    activeSection === 'preferences'
-                      ? 'bg-gray-100 text-gray-900 font-medium'
-                      : 'text-gray-600 hover:bg-gray-50'
-                  }`}
-                >
-                  Preferences
-                </button>
+              <div className="ml-5 mt-0.5 border-l border-zinc-200 pl-2 space-y-0.5">
+                {navItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => setActiveSection(item.id)}
+                    className={cn(
+                      'w-full flex items-center gap-2 px-2 py-1.5 text-sm rounded-md transition-colors',
+                      activeSection === item.id
+                        ? 'bg-violet-50 text-violet-700 font-medium'
+                        : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900'
+                    )}
+                  >
+                    <span className={activeSection === item.id ? 'text-violet-500' : 'text-zinc-400'}>
+                      {item.icon}
+                    </span>
+                    {item.label}
+                  </button>
+                ))}
               </div>
             </div>
-          </div>
-        </nav>
+          </nav>
+        </ScrollArea>
+
+        {/* Footer */}
+        <div className="p-3 border-t border-zinc-100">
+          <Link href="/" className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-zinc-600 transition-colors">
+            <ExternalLink className="w-3.5 h-3.5" /> Back to home
+          </Link>
+        </div>
       </aside>
 
-      {/* Main content */}
+      {/* Main */}
       <main className="flex-1 overflow-auto">
-        <div className="p-8">
-          {activeSection === 'themes' && (
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Themes</h2>
-              <div className="bg-white rounded-lg border border-gray-200 p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">Horizon Theme</h3>
-                    <p className="text-sm text-gray-500">Your current theme - Live Preview</p>
-                  </div>
-                  <div className="flex gap-2">
-                    <a
-                      href="/editor"
-                      className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md hover:bg-gray-800"
-                    >
-                      Customize
-                    </a>
-                  </div>
-                </div>
-                <div className="border border-gray-200 rounded-md overflow-hidden" style={{ height: '600px' }}>
-                  <iframe
-                    src="/preview"
-                    className="w-full h-full"
-                    title="Theme Preview"
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeSection === 'pages' && (
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Pages</h2>
-              <div className="bg-white rounded-lg border border-gray-200 p-6">
-                <p className="text-gray-600">Manage your store pages here.</p>
-              </div>
-            </div>
-          )}
-
-          {activeSection === 'preferences' && (
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Preferences</h2>
-              <div className="bg-white rounded-lg border border-gray-200 p-6">
-                <p className="text-gray-600">Configure your store preferences.</p>
-              </div>
-            </div>
-          )}
-        </div>
+        <ScrollArea className="h-full">
+          <div className="p-8 max-w-5xl">
+            {activeSection === 'themes' && <ThemesSection />}
+            {activeSection === 'pages' && <PlaceholderSection title="Pages" desc="Manage your store pages." />}
+            {activeSection === 'preferences' && <PlaceholderSection title="Preferences" desc="Configure your store settings." />}
+          </div>
+        </ScrollArea>
       </main>
+    </div>
+  );
+}
+
+function ThemesSection() {
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-zinc-900">Themes</h1>
+        <p className="text-sm text-zinc-500 mt-1">Manage and customize your store theme</p>
+      </div>
+
+      <div className="bg-white rounded-xl border border-zinc-200 shadow-sm overflow-hidden">
+        {/* Theme card header */}
+        <div className="flex items-center justify-between p-5 border-b border-zinc-100">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center">
+              <LayoutTemplate className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="font-semibold text-zinc-900">Horizon Theme</h3>
+                <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200">Active</Badge>
+              </div>
+              <p className="text-xs text-zinc-500">Current live theme</p>
+            </div>
+          </div>
+          <Link href="/editor">
+            <Button className="bg-violet-600 hover:bg-violet-700 text-white gap-2" size="sm">
+              <Settings className="w-3.5 h-3.5" /> Customize
+            </Button>
+          </Link>
+        </div>
+
+        {/* Preview iframe */}
+        <div className="bg-zinc-100" style={{ height: '560px' }}>
+          <iframe src="/preview" className="w-full h-full" title="Theme Preview" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PlaceholderSection({ title, desc }: { title: string; desc: string }) {
+  return (
+    <div className="space-y-4">
+      <div>
+        <h1 className="text-2xl font-bold text-zinc-900">{title}</h1>
+        <p className="text-sm text-zinc-500 mt-1">{desc}</p>
+      </div>
+      <div className="bg-white rounded-xl border border-zinc-200 p-8 text-center">
+        <p className="text-sm text-zinc-400">Coming soon…</p>
+      </div>
     </div>
   );
 }

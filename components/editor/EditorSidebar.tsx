@@ -1,8 +1,15 @@
 'use client';
 
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 import TreeSection from './TreeSection';
 import TreeItem from './TreeItem';
+import {
+  LayoutTemplate, Type, Image, Menu, Megaphone,
+  ChevronLeft, Zap, Plus, Home, AlignLeft,
+} from 'lucide-react';
 
 interface EditorSidebarProps {
   selectedItem: string | null;
@@ -18,141 +25,105 @@ export default function EditorSidebar({
   toggleSection,
 }: EditorSidebarProps) {
   return (
-    <aside className="w-80 bg-white border-r border-gray-200 flex flex-col">
+    <aside className="w-72 shrink-0 bg-white border-r border-zinc-200 flex flex-col shadow-sm">
       {/* Header */}
-      <div className="p-4 border-b border-gray-200">
-        <div className="flex items-center justify-between mb-2">
-          <a href="/dashboard" className="text-sm text-gray-600 hover:text-gray-900 flex items-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-4 h-4 mr-1"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Back to Dashboard
-          </a>
+      <div className="px-4 py-3 border-b border-zinc-100">
+        <Link href="/dashboard" className="flex items-center gap-1.5 text-xs text-zinc-500 hover:text-zinc-800 transition-colors mb-3 group w-fit">
+          <ChevronLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" />
+          Dashboard
+        </Link>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-md bg-violet-600 flex items-center justify-center shrink-0">
+              <Zap className="w-3.5 h-3.5 text-white" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-zinc-900 leading-none">Customize</p>
+              <p className="text-xs text-zinc-400 mt-0.5">Horizon theme</p>
+            </div>
+          </div>
+          <Badge variant="secondary" className="text-xs">Live</Badge>
         </div>
-        <h1 className="text-xl font-bold text-gray-900">Customize Theme</h1>
       </div>
 
-      {/* Sections Tree */}
-      <div className="flex-1 overflow-auto p-4">
-        <div className="space-y-1">
+      <div className="flex-1 overflow-y-auto min-h-0">
+        <div className="p-3 space-y-4">
           {/* Home page */}
-          <div className="mb-4">
-            <div className="flex items-center text-sm font-medium text-gray-500 mb-2">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-              </svg>
-              Home page
+          <div>
+            <div className="flex items-center gap-1.5 px-2 py-1 text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+              <Home className="w-3.5 h-3.5" /> Home page
+            </div>
+
+            {/* Header group */}
+            <div className="mt-1 space-y-0.5">
+              <TreeSection
+                title="Header"
+                icon={<AlignLeft className="w-3.5 h-3.5" />}
+                isExpanded={expandedSections.header}
+                onToggle={() => toggleSection('header')}
+                isSelected={selectedItem === 'header'}
+                onSelect={() => setSelectedItem('header')}
+              >
+                <TreeItem title="Announcement bar" icon={<Megaphone className="w-3.5 h-3.5" />} isSelected={selectedItem === 'announcementBar'} onClick={() => setSelectedItem('announcementBar')} level={1} />
+                <TreeItem title="Header" icon={<LayoutTemplate className="w-3.5 h-3.5" />} isSelected={selectedItem === 'headerMain'} onClick={() => setSelectedItem('headerMain')} level={1}>
+                  <TreeItem title="Logo" icon={<Image className="w-3.5 h-3.5" />} isSelected={selectedItem === 'logo'} onClick={() => setSelectedItem('logo')} level={2} />
+                  <TreeItem title="Menu" icon={<Menu className="w-3.5 h-3.5" />} subtitle="Main menu" isSelected={selectedItem === 'menu'} onClick={() => setSelectedItem('menu')} level={2} />
+                </TreeItem>
+                <button className="flex items-center gap-1.5 text-xs text-violet-600 hover:text-violet-700 font-medium px-2 py-1 ml-5 mt-1 rounded-md hover:bg-violet-50 transition-colors">
+                  <Plus className="w-3 h-3" /> Add section
+                </button>
+              </TreeSection>
             </div>
           </div>
 
-          {/* Header Section */}
-          <TreeSection
-            title="Header"
-            icon="header"
-            isExpanded={expandedSections.header}
-            onToggle={() => toggleSection('header')}
-            isSelected={selectedItem === 'header'}
-            onSelect={() => setSelectedItem('header')}
-          >
-            <TreeItem
-              title="Announcement bar"
-              icon="announcement"
-              isSelected={selectedItem === 'announcementBar'}
-              onClick={() => setSelectedItem('announcementBar')}
-              level={1}
+          <Separator className="my-1" />
+
+          {/* Template sections */}
+          <div>
+            <div className="flex items-center gap-1.5 px-2 py-1 text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1">
+              <LayoutTemplate className="w-3.5 h-3.5" /> Template
+            </div>
+            <div className="space-y-0.5">
+              {[
+                { id: 'hero', label: 'Hero' },
+                { id: 'collectionList', label: 'Collection List' },
+                { id: 'productGrid', label: 'Product Grid' },
+              ].map((s) => (
+                <TreeSection
+                  key={s.id}
+                  title={s.label}
+                  icon={<LayoutTemplate className="w-3.5 h-3.5" />}
+                  isExpanded={!!expandedSections[s.id]}
+                  onToggle={() => toggleSection(s.id)}
+                  isSelected={selectedItem === s.id}
+                  onSelect={() => setSelectedItem(s.id)}
+                />
+              ))}
+            </div>
+          </div>
+
+          <Separator className="my-1" />
+
+          {/* Footer */}
+          <div>
+            <div className="flex items-center gap-1.5 px-2 py-1 text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1">
+              <Type className="w-3.5 h-3.5" /> Footer
+            </div>
+            <TreeSection
+              title="Footer"
+              icon={<LayoutTemplate className="w-3.5 h-3.5" />}
+              isExpanded={!!expandedSections.footer}
+              onToggle={() => toggleSection('footer')}
+              isSelected={selectedItem === 'footer'}
+              onSelect={() => setSelectedItem('footer')}
             />
-            <TreeItem
-              title="Header"
-              icon="header"
-              isSelected={selectedItem === 'headerMain'}
-              onClick={() => setSelectedItem('headerMain')}
-              level={1}
-            >
-              <TreeItem
-                title="Logo"
-                icon="logo"
-                isSelected={selectedItem === 'logo'}
-                onClick={() => setSelectedItem('logo')}
-                level={2}
-              />
-              <TreeItem
-                title="Menu"
-                icon="menu"
-                subtitle="Main menu"
-                isSelected={selectedItem === 'menu'}
-                onClick={() => setSelectedItem('menu')}
-                level={2}
-              />
-            </TreeItem>
-            <button className="flex items-center text-sm text-blue-600 hover:text-blue-700 ml-6 mt-1">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-              Add section
-            </button>
-          </TreeSection>
-
-          {/* Template Section */}
-          <div className="mt-4 mb-2">
-            <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2">
-              Template
-            </div>
           </div>
-
-          <TreeSection
-            title="Hero"
-            icon="section"
-            isExpanded={expandedSections.hero}
-            onToggle={() => toggleSection('hero')}
-            isSelected={selectedItem === 'hero'}
-            onSelect={() => setSelectedItem('hero')}
-          />
-
-          <TreeSection
-            title="Collection List"
-            icon="section"
-            isExpanded={false}
-            onToggle={() => toggleSection('collectionList')}
-            isSelected={selectedItem === 'collectionList'}
-            onSelect={() => setSelectedItem('collectionList')}
-          />
-
-          <TreeSection
-            title="Product Grid"
-            icon="section"
-            isExpanded={false}
-            onToggle={() => toggleSection('productGrid')}
-            isSelected={selectedItem === 'productGrid'}
-            onSelect={() => setSelectedItem('productGrid')}
-          />
-
-          {/* Footer Section */}
-          <div className="mt-4 mb-2">
-            <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2">
-              Footer
-            </div>
-          </div>
-
-          <TreeSection
-            title="Footer"
-            icon="section"
-            isExpanded={expandedSections.footer}
-            onToggle={() => toggleSection('footer')}
-            isSelected={selectedItem === 'footer'}
-            onSelect={() => setSelectedItem('footer')}
-          />
         </div>
       </div>
 
-      {/* Footer Actions */}
-      <div className="p-4 border-t border-gray-200">
-        <Button className="w-full bg-black hover:bg-gray-800 text-white">
+      {/* Save button */}
+      <div className="p-3 border-t border-zinc-100">
+        <Button className="w-full bg-violet-600 hover:bg-violet-700 text-white h-9 font-medium">
           Save Changes
         </Button>
       </div>
