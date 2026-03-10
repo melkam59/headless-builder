@@ -1,33 +1,43 @@
-import { pgTable, serial, text, timestamp, jsonb, integer } from 'drizzle-orm/pg-core';
+import { pgTable, serial, text, timestamp, jsonb, boolean, integer, unique, varchar } from 'drizzle-orm/pg-core'
 
-// Core theme table — stores the full theme settings blob (Shopify-style)
 export const themes = pgTable('themes', {
   id: serial('id').primaryKey(),
   name: text('name').notNull(),
-  settings: jsonb('settings').notNull(),
-  isActive: text('is_active').default('false'),
+  preset: text('preset').notNull().default('horizon'),
+  globalSections: jsonb('global_sections').notNull().default('{"sections":{},"order":[]}'),
+  settings: jsonb('settings').notNull().default('{}'),
+  isActive: boolean('is_active').notNull().default(false),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
-});
+})
 
-// Store identity — querybale store name, separate from the JSONB blob
-export const storeSettings = pgTable('store_settings', {
+export const pages = pgTable('pages', {
   id: serial('id').primaryKey(),
-  themeId: integer('theme_id').references(() => themes.id, { onDelete: 'cascade' }),
-  storeName: text('store_name').notNull().default('My Store'),
+  themeId: integer('theme_id').references(() => themes.id, { onDelete: 'cascade' }).notNull(),
+  handle: text('handle').notNull(),
+  title: text('title').notNull(),
+  sections: jsonb('sections').notNull().default('{"sections":{},"order":[]}'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
-});
+}, (table) => [
+  unique('theme_handle_unique').on(table.themeId, table.handle),
+])
 
-// Navigation menu items — structured so they're independently queryable
+export const menus = pgTable('menus', {
+  id: serial('id').primaryKey(),
+  handle: varchar('handle', { length: 100 }).notNull().unique(),
+  title: text('title').notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+})
+
 export const menuItems = pgTable('menu_items', {
   id: serial('id').primaryKey(),
-  themeId: integer('theme_id').references(() => themes.id, { onDelete: 'cascade' }),
-  itemId: text('item_id').notNull(),        // e.g. "menu-1"
+  menuId: integer('menu_id').references(() => menus.id, { onDelete: 'cascade' }).notNull(),
   label: text('label').notNull(),
-  link: text('link').notNull(),
-  visible: text('visible').default('true'),
-  sortOrder: integer('sort_order').default(0),
-  parentId: text('parent_id'),              // null = top-level, else parent itemId
+  url: text('url').notNull().default('#'),
+  position: integer('position').notNull().default(0),
+  parentId: integer('parent_id'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
-});
+})

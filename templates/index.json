@@ -1,0 +1,30 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero"
+    },
+    "collection-list": {
+      "type": "collectionList"
+    },
+    "product-grid": {
+      "type": "productGrid"
+    },
+    "image-with-text": {
+      "type": "imageWithText"
+    },
+    "testimonials": {
+      "type": "testimonials"
+    },
+    "newsletter": {
+      "type": "newsletter"
+    }
+  },
+  "order": [
+    "hero",
+    "collection-list",
+    "product-grid",
+    "image-with-text",
+    "testimonials",
+    "newsletter"
+  ]
+}

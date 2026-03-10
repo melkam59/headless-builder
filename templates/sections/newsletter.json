@@ -1,0 +1,35 @@
+{
+  "type": "newsletter",
+  "settings": {
+    "heading": {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "defaultValue": "Stay in the Loop"
+    },
+    "subtext": {
+      "type": "text",
+      "id": "subtext",
+      "label": "Subtext",
+      "defaultValue": "Subscribe to get special offers, free giveaways, and updates."
+    },
+    "buttonLabel": {
+      "type": "text",
+      "id": "buttonLabel",
+      "label": "Button Label",
+      "defaultValue": "Subscribe"
+    },
+    "backgroundColor": {
+      "type": "color",
+      "id": "backgroundColor",
+      "label": "Background Color",
+      "defaultValue": "#000000"
+    },
+    "textColor": {
+      "type": "color",
+      "id": "textColor",
+      "label": "Text Color",
+      "defaultValue": "#ffffff"
+    }
+  }
+}

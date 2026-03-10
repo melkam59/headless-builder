@@ -1,0 +1,42 @@
+{
+  "type": "announcementBar",
+  "settings": {
+    "enabled": {
+      "type": "checkbox",
+      "id": "enabled",
+      "label": "Enable Announcement Bar",
+      "defaultValue": true
+    },
+    "backgroundColor": {
+      "type": "color",
+      "id": "backgroundColor",
+      "label": "Background Color",
+      "defaultValue": "#000000"
+    },
+    "textColor": {
+      "type": "color",
+      "id": "textColor",
+      "label": "Text Color",
+      "defaultValue": "#ffffff"
+    }
+  },
+  "blocks": [
+    {
+      "type": "announcement",
+      "settings": {
+        "text": {
+          "type": "text",
+          "id": "text",
+          "label": "Announcement Text",
+          "defaultValue": "Free shipping on orders over $50"
+        },
+        "link": {
+          "type": "url",
+          "id": "link",
+          "label": "Link URL",
+          "defaultValue": ""
+        }
+      }
+    }
+  ]
+}

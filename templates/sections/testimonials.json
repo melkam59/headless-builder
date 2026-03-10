@@ -1,0 +1,113 @@
+{
+  "type": "testimonials",
+  "settings": {
+    "heading": {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "defaultValue": "What Our Customers Say"
+    },
+    "layout": {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout Style",
+      "options": ["grid", "carousel"],
+      "defaultValue": "carousel"
+    },
+    "backgroundColor": {
+      "type": "color",
+      "id": "backgroundColor",
+      "label": "Background Color",
+      "defaultValue": "#f9f9f9"
+    }
+  },
+  "blocks": [
+    {
+      "type": "testimonial",
+      "settings": {
+        "quote": {
+          "type": "text",
+          "id": "quote",
+          "label": "Testimonial Quote",
+          "defaultValue": "Absolutely love the quality and style. Fast shipping and excellent customer service!"
+        },
+        "name": {
+          "type": "text",
+          "id": "name",
+          "label": "Customer Name",
+          "defaultValue": "Sarah Johnson"
+        },
+        "avatar": {
+          "type": "image",
+          "id": "avatar",
+          "label": "Avatar Image",
+          "defaultValue": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop"
+        },
+        "rating": {
+          "type": "number",
+          "id": "rating",
+          "label": "Star Rating (1-5)",
+          "defaultValue": 5
+        }
+      }
+    },
+    {
+      "type": "testimonial",
+      "settings": {
+        "quote": {
+          "type": "text",
+          "id": "quote",
+          "label": "Testimonial Quote",
+          "defaultValue": "Best online shopping experience. The products exceeded my expectations!"
+        },
+        "name": {
+          "type": "text",
+          "id": "name",
+          "label": "Customer Name",
+          "defaultValue": "Michael Chen"
+        },
+        "avatar": {
+          "type": "image",
+          "id": "avatar",
+          "label": "Avatar Image",
+          "defaultValue": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop"
+        },
+        "rating": {
+          "type": "number",
+          "id": "rating",
+          "label": "Star Rating (1-5)",
+          "defaultValue": 5
+        }
+      }
+    },
+    {
+      "type": "testimonial",
+      "settings": {
+        "quote": {
+          "type": "text",
+          "id": "quote",
+          "label": "Testimonial Quote",
+          "defaultValue": "Sustainable, stylish, and affordable. What more could you ask for?"
+        },
+        "name": {
+          "type": "text",
+          "id": "name",
+          "label": "Customer Name",
+          "defaultValue": "Emily Rodriguez"
+        },
+        "avatar": {
+          "type": "image",
+          "id": "avatar",
+          "label": "Avatar Image",
+          "defaultValue": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop"
+        },
+        "rating": {
+          "type": "number",
+          "id": "rating",
+          "label": "Star Rating (1-5)",
+          "defaultValue": 5
+        }
+      }
+    }
+  ]
+}

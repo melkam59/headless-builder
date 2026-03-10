@@ -1,0 +1,125 @@
+{
+  "type": "footer",
+  "settings": {
+    "backgroundColor": {
+      "type": "color",
+      "id": "backgroundColor",
+      "label": "Background Color",
+      "defaultValue": "#1a1a1a"
+    },
+    "textColor": {
+      "type": "color",
+      "id": "textColor",
+      "label": "Text Color",
+      "defaultValue": "#ffffff"
+    },
+    "showSocialIcons": {
+      "type": "checkbox",
+      "id": "showSocialIcons",
+      "label": "Show Social Icons",
+      "defaultValue": true
+    },
+    "copyrightText": {
+      "type": "text",
+      "id": "copyrightText",
+      "label": "Copyright Text",
+      "defaultValue": "© 2026 My Store. All rights reserved."
+    }
+  },
+  "blocks": [
+    {
+      "type": "menuColumn",
+      "settings": {
+        "heading": {
+          "type": "text",
+          "id": "heading",
+          "label": "Column Heading",
+          "defaultValue": "Shop"
+        }
+      },
+      "blocks": [
+        {
+          "type": "link",
+          "settings": {
+            "label": {
+              "type": "text",
+              "id": "label",
+              "label": "Link Label",
+              "defaultValue": "All Products"
+            },
+            "url": {
+              "type": "url",
+              "id": "url",
+              "label": "Link URL",
+              "defaultValue": "/collections/all"
+            }
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "label": {
+              "type": "text",
+              "id": "label",
+              "label": "Link Label",
+              "defaultValue": "New Arrivals"
+            },
+            "url": {
+              "type": "url",
+              "id": "url",
+              "label": "Link URL",
+              "defaultValue": "/collections/new"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "menuColumn",
+      "settings": {
+        "heading": {
+          "type": "text",
+          "id": "heading",
+          "label": "Column Heading",
+          "defaultValue": "About"
+        }
+      },
+      "blocks": [
+        {
+          "type": "link",
+          "settings": {
+            "label": {
+              "type": "text",
+              "id": "label",
+              "label": "Link Label",
+              "defaultValue": "Our Story"
+            },
+            "url": {
+              "type": "url",
+              "id": "url",
+              "label": "Link URL",
+              "defaultValue": "/pages/about"
+            }
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "label": {
+              "type": "text",
+              "id": "label",
+              "label": "Link Label",
+              "defaultValue": "Contact"
+            },
+            "url": {
+              "type": "url",
+              "id": "url",
+              "label": "Link URL",
+              "defaultValue": "/pages/contact"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

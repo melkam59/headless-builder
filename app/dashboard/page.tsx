@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -8,20 +9,39 @@ import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Store, FileText, Settings, Zap, ExternalLink, LayoutTemplate,
-  ChevronRight, Globe,
+  ChevronRight, Globe, Menu,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import NavigationSection from '@/components/dashboard/NavigationSection';
 
-type Section = 'themes' | 'pages' | 'preferences';
+type Section = 'themes' | 'navigation' | 'pages' | 'preferences';
+
+const VALID_SECTIONS: Section[] = ['themes', 'navigation', 'pages', 'preferences'];
 
 const navItems: { id: Section; label: string; icon: React.ReactNode }[] = [
   { id: 'themes', label: 'Themes', icon: <LayoutTemplate className="w-4 h-4" /> },
+  { id: 'navigation', label: 'Navigation', icon: <Menu className="w-4 h-4" /> },
   { id: 'pages', label: 'Pages', icon: <FileText className="w-4 h-4" /> },
   { id: 'preferences', label: 'Preferences', icon: <Settings className="w-4 h-4" /> },
 ];
 
 export default function DashboardPage() {
-  const [activeSection, setActiveSection] = useState<Section>('themes');
+  return (
+    <Suspense fallback={<div className="flex h-screen items-center justify-center bg-zinc-50"><div className="w-6 h-6 border-2 border-violet-600 border-t-transparent rounded-full animate-spin" /></div>}>
+      <DashboardContent />
+    </Suspense>
+  )
+}
+
+function DashboardContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const tabParam = searchParams.get('tab') as Section | null;
+  const activeSection: Section = tabParam && VALID_SECTIONS.includes(tabParam) ? tabParam : 'themes';
+
+  const setActiveSection = (section: Section) => {
+    router.replace(`/dashboard?tab=${section}`, { scroll: false });
+  };
 
   return (
     <div className="flex h-screen bg-zinc-50 overflow-hidden">
@@ -87,6 +107,7 @@ export default function DashboardPage() {
         <ScrollArea className="h-full">
           <div className="p-8 max-w-5xl">
             {activeSection === 'themes' && <ThemesSection />}
+            {activeSection === 'navigation' && <NavigationSection />}
             {activeSection === 'pages' && <PlaceholderSection title="Pages" desc="Manage your store pages." />}
             {activeSection === 'preferences' && <PlaceholderSection title="Preferences" desc="Configure your store settings." />}
           </div>

@@ -1,0 +1,48 @@
+{
+  "type": "header",
+  "settings": {
+    "storeName": {
+      "type": "text",
+      "id": "storeName",
+      "label": "Store Name",
+      "defaultValue": "My Store"
+    },
+    "logoImage": {
+      "type": "image",
+      "id": "logoImage",
+      "label": "Logo Image",
+      "defaultValue": ""
+    },
+    "logoWidth": {
+      "type": "number",
+      "id": "logoWidth",
+      "label": "Logo Width (px)",
+      "defaultValue": 120
+    },
+    "logoPosition": {
+      "type": "select",
+      "id": "logoPosition",
+      "label": "Logo Position",
+      "defaultValue": "left",
+      "options": ["left", "center", "right"]
+    },
+    "menu": {
+      "type": "menu",
+      "id": "menu",
+      "label": "Menu",
+      "defaultValue": "main-menu"
+    },
+    "transparentHeader": {
+      "type": "checkbox",
+      "id": "transparentHeader",
+      "label": "Transparent Header",
+      "defaultValue": false
+    },
+    "stickyHeader": {
+      "type": "checkbox",
+      "id": "stickyHeader",
+      "label": "Sticky Header on Scroll",
+      "defaultValue": true
+    }
+  }
+}

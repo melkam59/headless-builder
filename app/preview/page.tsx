@@ -1,151 +1,148 @@
-'use client';
+'use client'
 
-import { useEffect, useState } from 'react';
-import AnnouncementBar from '@/components/sections/AnnouncementBar';
-import Header from '@/components/sections/Header';
-import Hero from '@/components/sections/Hero';
-import CollectionList from '@/components/sections/CollectionList';
-import ProductGrid from '@/components/sections/ProductGrid';
-import ImageWithText from '@/components/sections/ImageWithText';
-import Testimonials from '@/components/sections/Testimonials';
-import Newsletter from '@/components/sections/Newsletter';
-import Footer from '@/components/sections/Footer';
-import themeData from '@/themes/horizon-theme.json';
+import { useEffect, useState, useRef, useCallback } from 'react'
+import AnnouncementBar from '@/components/sections/AnnouncementBar'
+import Header from '@/components/sections/Header'
+import Hero from '@/components/sections/Hero'
+import CollectionList from '@/components/sections/CollectionList'
+import ProductGrid from '@/components/sections/ProductGrid'
+import ImageWithText from '@/components/sections/ImageWithText'
+import Testimonials from '@/components/sections/Testimonials'
+import Newsletter from '@/components/sections/Newsletter'
+import Footer from '@/components/sections/Footer'
+import type { SchemaSection } from '@/lib/types'
+import { schema } from '@/lib/sections'
+
+const COMPONENT_MAP: Record<string, React.ComponentType<any>> = {
+  announcementBar: AnnouncementBar,
+  header: Header,
+  hero: Hero,
+  collectionList: CollectionList,
+  productGrid: ProductGrid,
+  imageWithText: ImageWithText,
+  testimonials: Testimonials,
+  newsletter: Newsletter,
+  footer: Footer,
+}
+
+interface MenuApiItem {
+  label: string
+  url: string
+  children?: MenuApiItem[]
+}
+
+function menuItemsToBlocks(items: MenuApiItem[]) {
+  return items.map((item) => ({
+    type: 'menuItem',
+    settings: {
+      label: { type: 'text', id: 'label', label: 'Label', defaultValue: item.label },
+      link: { type: 'url', id: 'link', label: 'Link', defaultValue: item.url },
+    },
+    blocks: (item.children || []).map((child) => ({
+      type: 'submenuItem',
+      settings: {
+        label: { type: 'text', id: 'label', label: 'Label', defaultValue: child.label },
+        link: { type: 'url', id: 'link', label: 'Link', defaultValue: child.url },
+        image: { type: 'image', id: 'image', label: 'Image', defaultValue: '' },
+      },
+    })),
+  }))
+}
+
+function getMenuHandle(sections: SchemaSection[]): string {
+  const header = sections.find((s) => s.type === 'header')
+  return header?.settings?.menu?.defaultValue || 'main-menu'
+}
+
+function injectMenuBlocks(sections: SchemaSection[], menuBlocks: any[] | null): SchemaSection[] {
+  if (!menuBlocks) return sections
+  return sections.map((section) => {
+    if (section.type === 'header') {
+      return { ...section, blocks: menuBlocks }
+    }
+    return section
+  })
+}
 
 export default function PreviewPage() {
-  const [sections, setSections] = useState(themeData.sections);
-  const [logoSettings, setLogoSettings] = useState<any>({
-    storeName: 'My Store',
-    image: '',
-    width: 120,
-    hideOnHomePage: false,
-    position: 'left',
-    padding: { top: 24, bottom: 26, left: 4, right: 0 },
-  });
-  const [headerSettings, setHeaderSettings] = useState<any>(null);
-  const [menuItems, setMenuItems] = useState<any[]>([]);
-  const [heroSettings, setHeroSettings] = useState<any>(null);
+  const [sections, setSections] = useState<SchemaSection[]>(schema)
+  const menuBlocksRef = useRef<any[] | null>(null)
+  const menuHandleRef = useRef<string>('main-menu')
+
+  const fetchMenu = useCallback(async (handle: string) => {
+    try {
+      // Try the specified handle first
+      if (handle) {
+        const res = await fetch(`/api/menus?handle=${handle}`)
+        const data = await res.json()
+        if (data && data.items && data.items.length > 0) {
+          const blocks = menuItemsToBlocks(data.items)
+          menuBlocksRef.current = blocks
+          return blocks
+        }
+      }
+      // Fall back to first available menu
+      const allRes = await fetch('/api/menus')
+      const allMenus = await allRes.json()
+      if (Array.isArray(allMenus) && allMenus.length > 0) {
+        const first = allMenus.find((m: any) => m.items && m.items.length > 0)
+        if (first) {
+          const blocks = menuItemsToBlocks(first.items)
+          menuBlocksRef.current = blocks
+          return blocks
+        }
+      }
+    } catch (e) {
+      console.error('Failed to fetch menu:', e)
+    }
+    menuBlocksRef.current = null
+    return null
+  }, [])
 
   useEffect(() => {
-    // Fetch initial theme on mount so we don't start with the default JSON template
-    const fetchTheme = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch('/api/themes');
-        const data = await res.json();
-        if (data.settings) {
-          if (data.settings.logo) setLogoSettings(data.settings.logo);
-          if (data.settings.header) setHeaderSettings(data.settings.header);
-          if (data.settings.menu) setMenuItems(data.settings.menu);
-          if (data.settings.hero) setHeroSettings(data.settings.hero);
-        }
+        const themeRes = await fetch('/api/themes')
+        const themeData = await themeRes.json()
+
+        const merged = themeData.mergedSections || schema
+        const handle = getMenuHandle(merged)
+        menuHandleRef.current = handle
+
+        const blocks = await fetchMenu(handle)
+        setSections(injectMenuBlocks(merged, blocks))
       } catch (e) {
-        console.error('Preview failed to fetch theme:', e);
+        console.error('Preview failed to fetch:', e)
       }
-    };
-    fetchTheme();
+    }
+    fetchData()
 
-    // Listen for real-time updates from editor
-    const handleMessage = (event: MessageEvent) => {
-      if (event.data.type === 'UPDATE_THEME') {
-        const { section, settings } = event.data;
-        
-        if (section === 'logo' && settings.logo) {
-          setLogoSettings(settings.logo);
-        } else if (section === 'header' && settings.header) {
-          setHeaderSettings(settings.header);
-        } else if (section === 'menu' && settings.menu) {
-          setMenuItems(settings.menu);
-        } else if (section === 'hero' && settings.hero) {
-          setHeroSettings(settings.hero);
+    const handleMessage = async (event: MessageEvent) => {
+      if (event.data.type === 'FULL_UPDATE' && event.data.sections) {
+        const updated = event.data.sections as SchemaSection[]
+        const newHandle = getMenuHandle(updated)
+
+        if (newHandle !== menuHandleRef.current) {
+          menuHandleRef.current = newHandle
+          const blocks = await fetchMenu(newHandle)
+          setSections(injectMenuBlocks(updated, blocks))
+        } else {
+          setSections(injectMenuBlocks(updated, menuBlocksRef.current))
         }
       }
-    };
-
-    window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
-  }, []);
-
-  // Update sections with dynamic settings
-  const updatedSections = sections.map(section => {
-    if (section.type === 'header') {
-      // Convert menu items to blocks format
-      const menuBlocks = menuItems.length > 0 ? menuItems
-        .filter(item => item.visible !== false) // Only show visible items
-        .map(item => ({
-          type: 'menuItem',
-          settings: {
-            label: { defaultValue: item.label },
-            link: { defaultValue: item.link },
-          },
-          blocks: item.submenu
-            ?.filter((sub: any) => sub.visible !== false) // Only show visible submenu items
-            .map((sub: any) => ({
-              type: 'submenuItem',
-              settings: {
-                label: { defaultValue: sub.label },
-                link: { defaultValue: sub.link },
-                image: { defaultValue: '' },
-              },
-            })) || [],
-        })) : section.blocks;
-
-      return {
-        ...section,
-        blocks: menuBlocks,
-        settings: {
-          ...section.settings,
-          storeName: logoSettings.storeName,
-          logoImage: { ...section.settings.logoImage, defaultValue: logoSettings.image },
-          logoWidth: { ...section.settings.logoWidth, defaultValue: logoSettings.width },
-          logoPosition: logoSettings.position,
-          logoPadding: logoSettings.padding,
-          ...(headerSettings && {
-            stickyHeader: { ...section.settings.stickyHeader, defaultValue: headerSettings.stickyHeader },
-            transparentHeader: { ...section.settings.transparentHeader, defaultValue: headerSettings.transparentHeader },
-          }),
-        }
-      };
     }
-    if (section.type === 'hero' && heroSettings) {
-      return {
-        ...section,
-        settings: {
-          ...section.settings,
-          backgroundImage: { ...section.settings.backgroundImage, defaultValue: heroSettings.backgroundImage },
-          height: { ...section.settings.height, defaultValue: heroSettings.height },
-          overlayOpacity: { ...section.settings.overlayOpacity, defaultValue: heroSettings.overlayOpacity },
-        }
-      };
-    }
-    return section;
-  });
+
+    window.addEventListener('message', handleMessage)
+    return () => window.removeEventListener('message', handleMessage)
+  }, [fetchMenu])
 
   return (
     <main className="min-h-screen">
-      {updatedSections.map((section, index) => {
-        switch (section.type) {
-          case 'announcementBar':
-            return <AnnouncementBar key={index} settings={section.settings} blocks={section.blocks} />;
-          case 'header':
-            return <Header key={index} settings={section.settings} blocks={section.blocks} />;
-          case 'hero':
-            return <Hero key={index} settings={section.settings} blocks={section.blocks} />;
-          case 'collectionList':
-            return <CollectionList key={index} settings={section.settings} blocks={section.blocks} />;
-          case 'productGrid':
-            return <ProductGrid key={index} settings={section.settings} />;
-          case 'imageWithText':
-            return <ImageWithText key={index} settings={section.settings} blocks={section.blocks} />;
-          case 'testimonials':
-            return <Testimonials key={index} settings={section.settings} blocks={section.blocks} />;
-          case 'newsletter':
-            return <Newsletter key={index} settings={section.settings} />;
-          case 'footer':
-            return <Footer key={index} settings={section.settings} blocks={section.blocks} />;
-          default:
-            return null;
-        }
+      {sections.map((section, index) => {
+        const Component = COMPONENT_MAP[section.type]
+        if (!Component) return null
+        return <Component key={`${section.type}-${index}`} settings={section.settings} blocks={section.blocks} />
       })}
     </main>
-  );
+  )
 }

@@ -1,21 +1,21 @@
-'use client';
+'use client'
 
-import React from 'react';
+import { cn } from '@/lib/utils'
 
 interface Block {
-  type: string;
-  settings: any;
+  type: string
+  settings: any
 }
 
 interface TestimonialsProps {
-  settings: any;
-  blocks?: Block[];
+  settings: any
+  blocks?: Block[]
 }
 
 export default function Testimonials({ settings, blocks = [] }: TestimonialsProps) {
-  const heading = settings.heading?.defaultValue || 'What Our Customers Say';
-  const layout = settings.layout?.defaultValue || 'carousel';
-  const backgroundColor = settings.backgroundColor?.defaultValue || '#f9f9f9';
+  const heading = settings.heading?.defaultValue || 'What Our Customers Say'
+  const layout = settings.layout?.defaultValue || 'carousel'
+  const backgroundColor = settings.backgroundColor?.defaultValue || '#f9f9f9'
 
   return (
     <section className="py-16 px-4" style={{ backgroundColor }}>
@@ -24,31 +24,30 @@ export default function Testimonials({ settings, blocks = [] }: TestimonialsProp
           {heading}
         </h2>
 
-        <div className={`grid ${layout === 'grid' ? 'md:grid-cols-3' : 'md:grid-cols-1'} gap-8`}>
+        <div className={cn('grid gap-8', layout === 'grid' ? 'md:grid-cols-3' : 'md:grid-cols-1')}>
           {blocks.map((block, index) => (
             <TestimonialCard key={index} block={block} />
           ))}
         </div>
       </div>
     </section>
-  );
+  )
 }
 
 function TestimonialCard({ block }: { block: Block }) {
-  const quote = block.settings.quote?.defaultValue || '';
-  const name = block.settings.name?.defaultValue || '';
-  const avatar = block.settings.avatar?.defaultValue || '';
-  const rating = block.settings.rating?.defaultValue || 5;
+  const quote = block.settings.quote?.defaultValue || ''
+  const name = block.settings.name?.defaultValue || ''
+  const avatar = block.settings.avatar?.defaultValue || ''
+  const rating = block.settings.rating?.defaultValue || 5
 
   return (
     <div className="bg-white rounded-lg p-6 shadow-sm">
-      {/* Stars */}
       <div className="flex mb-4">
         {[...Array(5)].map((_, i) => (
           <svg
             key={i}
             xmlns="http://www.w3.org/2000/svg"
-            className={`w-5 h-5 ${i < rating ? 'text-yellow-400' : 'text-gray-300'}`}
+            className={cn('w-5 h-5', i < rating ? 'text-yellow-400' : 'text-gray-300')}
             fill="currentColor"
             viewBox="0 0 20 20"
           >
@@ -57,22 +56,16 @@ function TestimonialCard({ block }: { block: Block }) {
         ))}
       </div>
 
-      {/* Quote */}
-      <p className="text-gray-700 mb-6 italic">"{quote}"</p>
+      <p className="text-gray-700 mb-6 italic">&ldquo;{quote}&rdquo;</p>
 
-      {/* Author */}
       <div className="flex items-center">
         {avatar && (
-          <img
-            src={avatar}
-            alt={name}
-            className="w-12 h-12 rounded-full object-cover mr-4"
-          />
+          <img src={avatar} alt={name} className="w-12 h-12 rounded-full object-cover mr-4" />
         )}
         <div>
           <p className="font-semibold text-gray-900">{name}</p>
         </div>
       </div>
     </div>
-  );
+  )
 }
