@@ -1,13 +1,15 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, Suspense } from 'react'
 import { Monitor, Tablet, Smartphone } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import EditorSidebar from '@/components/editor/EditorSidebar'
 import SettingsPanel from '@/components/editor/SettingsPanel'
 import { mergeSections, isGlobalSection, extractDefaults } from '@/lib/theme-utils'
-import type { StoredSectionsData, SchemaSection } from '@/lib/types'
+import type { StoredSectionsData, SchemaSection, StoredBlockValues, StoredSectionValues } from '@/lib/types'
 import { schema } from '@/lib/sections'
 import { cn } from '@/lib/utils'
+import { useSearchParams } from 'next/navigation'
 
 type DeviceView = 'desktop' | 'tablet' | 'mobile'
 
@@ -26,6 +28,17 @@ const previewWidths: Record<DeviceView, string> = {
 const emptyStored: StoredSectionsData = { sections: {}, order: [] }
 
 export default function EditorPage() {
+  return (
+    <Suspense fallback={<div className="flex h-screen items-center justify-center bg-zinc-50"><div className="w-8 h-8 border-2 border-violet-600 border-t-transparent rounded-full animate-spin" /></div>}>
+      <EditorContent />
+    </Suspense>
+  )
+}
+
+function EditorContent() {
+  const searchParams = useSearchParams()
+  const pageHandle = searchParams.get('pageHandle') ?? 'index'
+
   const [selectedItem, setSelectedItem] = useState<string | null>(null)
   const [deviceView, setDeviceView] = useState<DeviceView>('desktop')
   const themeIdRef = useRef<number | null>(null)
@@ -70,17 +83,17 @@ export default function EditorPage() {
           themeId: themeIdRef.current,
           globalSections: g,
           pageSections: p,
-          pageHandle: 'index',
+          pageHandle,
           themeSettings,
         }),
       })
     } catch (e) { console.error(e) }
-  }, [themeSettings])
+  }, [themeSettings, pageHandle])
 
   useEffect(() => {
     const fetchTheme = async () => {
       try {
-        const res = await fetch('/api/themes')
+        const res = await fetch(`/api/themes?page=${pageHandle}`)
         const data = await res.json()
 
         if (data.theme) {
@@ -216,6 +229,151 @@ export default function EditorPage() {
     })
   }
 
+  // ── Add block ──────────────────────────────────────────────────────────────
+  const addBlock = (sectionId: string, blockType: string) => {
+    const isGlobal = globalSections.sections[sectionId] !== undefined
+    const setter = isGlobal ? setGlobalSections : setPageSections
+
+    // Find block schema defaults
+    const sectionSchema = schema.find((s) => s.type ===
+      (isGlobal ? globalSections : pageSections).sections[sectionId]?.type)
+    const blockSchemaDef = sectionSchema?.blocks?.find((b) => b.type === blockType)
+    if (!blockSchemaDef) return
+
+    const defaultSettings: Record<string, any> = {}
+    for (const [key, field] of Object.entries(blockSchemaDef.settings)) {
+      defaultSettings[key] = (field as any).defaultValue
+    }
+
+    const blockId = `${blockType}-${Date.now()}`
+    const newBlock: StoredBlockValues = { type: blockType, settings: defaultSettings }
+
+    setter((prev) => {
+      const section = prev.sections[sectionId]
+      if (!section) return prev
+      const next: StoredSectionsData = {
+        ...prev,
+        sections: {
+          ...prev.sections,
+          [sectionId]: {
+            ...section,
+            blocks: { ...(section.blocks ?? {}), [blockId]: newBlock },
+            block_order: [...(section.block_order ?? []), blockId],
+          },
+        },
+      }
+      if (isGlobal) globalSectionsRef.current = next
+      else pageSectionsRef.current = next
+      sendToPreview(
+        isGlobal ? next : globalSectionsRef.current,
+        isGlobal ? pageSectionsRef.current : next,
+      )
+      if (saveTimer.current) clearTimeout(saveTimer.current)
+      saveTimer.current = setTimeout(() =>
+        saveTheme(globalSectionsRef.current, pageSectionsRef.current), 500)
+      return next
+    })
+  }
+
+  // ── Remove block ────────────────────────────────────────────────────────────
+  const removeBlock = (sectionId: string, blockId: string) => {
+    const isGlobal = globalSections.sections[sectionId] !== undefined
+    const setter = isGlobal ? setGlobalSections : setPageSections
+
+    setter((prev) => {
+      const section = prev.sections[sectionId]
+      if (!section) return prev
+      const { [blockId]: _removed, ...restBlocks } = section.blocks ?? {}
+      const next: StoredSectionsData = {
+        ...prev,
+        sections: {
+          ...prev.sections,
+          [sectionId]: {
+            ...section,
+            blocks: restBlocks,
+            block_order: (section.block_order ?? []).filter((id) => id !== blockId),
+          },
+        },
+      }
+      if (isGlobal) globalSectionsRef.current = next
+      else pageSectionsRef.current = next
+      sendToPreview(
+        isGlobal ? next : globalSectionsRef.current,
+        isGlobal ? pageSectionsRef.current : next,
+      )
+      if (saveTimer.current) clearTimeout(saveTimer.current)
+      saveTimer.current = setTimeout(() =>
+        saveTheme(globalSectionsRef.current, pageSectionsRef.current), 500)
+      return next
+    })
+  }
+  const addSection = (sectionType: string) => {
+    // We only add sections to the page, never global
+    const sectionSchemaDef = schema.find((s) => s.type === sectionType)
+    if (!sectionSchemaDef || isGlobalSection(sectionType)) return
+
+    const defaultSettings: Record<string, any> = {}
+    for (const [key, field] of Object.entries(sectionSchemaDef.settings)) {
+      defaultSettings[key] = (field as any).defaultValue
+    }
+
+    const sectionId = `${sectionType}-${Date.now()}`
+    const newSection: StoredSectionValues = {
+      type: sectionType,
+      settings: defaultSettings,
+      blocks: {},
+      block_order: [],
+    }
+
+    setPageSections((prev) => {
+      const next: StoredSectionsData = {
+        ...prev,
+        sections: {
+          ...prev.sections,
+          [sectionId]: newSection,
+        },
+        order: [...prev.order, sectionId],
+      }
+
+      pageSectionsRef.current = next
+      sendToPreview(globalSectionsRef.current, next)
+      
+      if (saveTimer.current) clearTimeout(saveTimer.current)
+      saveTimer.current = setTimeout(() =>
+        saveTheme(globalSectionsRef.current, pageSectionsRef.current), 500)
+        
+      setSelectedItem(sectionId)
+      return next
+    })
+  }
+
+  // ── Remove Section ─────────────────────────────────────────────────────────
+  const removeSection = (sectionId: string) => {
+    // Only allow removing page sections
+    if (globalSections.sections[sectionId]) return
+
+    setPageSections((prev) => {
+      const { [sectionId]: _removed, ...restSections } = prev.sections
+      const next: StoredSectionsData = {
+        ...prev,
+        sections: restSections,
+        order: prev.order.filter((id) => id !== sectionId),
+      }
+
+      pageSectionsRef.current = next
+      sendToPreview(globalSectionsRef.current, next)
+      
+      if (saveTimer.current) clearTimeout(saveTimer.current)
+      saveTimer.current = setTimeout(() =>
+        saveTheme(globalSectionsRef.current, pageSectionsRef.current), 500)
+        
+      if (selectedItem === sectionId) {
+        setSelectedItem(null)
+      }
+      return next
+    })
+  }
+
   const selectedSectionId = selectedItem
   const selectedStoredSection = selectedSectionId
     ? globalSections.sections[selectedSectionId] || pageSections.sections[selectedSectionId]
@@ -244,22 +402,26 @@ export default function EditorPage() {
         pageSections={pageSections}
         expandedSections={expandedSections}
         toggleSection={toggleSection}
+        onAddSection={addSection}
       />
 
       <main className="flex-1 flex flex-col overflow-hidden">
         <div className="h-12 bg-white border-b border-zinc-200 flex items-center justify-center gap-1 px-4">
           {(['desktop', 'tablet', 'mobile'] as DeviceView[]).map((d) => (
-            <button
+            <Button
               key={d}
+              type="button"
+              variant="ghost"
+              size="sm"
               onClick={() => setDeviceView(d)}
               title={d}
               className={cn(
-                'p-2 rounded-md transition-colors capitalize text-sm flex items-center gap-1.5',
+                'capitalize text-sm flex items-center gap-1.5',
                 deviceView === d ? 'bg-violet-50 text-violet-700' : 'text-zinc-500 hover:bg-zinc-100',
               )}
             >
               {deviceIcons[d]}
-            </button>
+            </Button>
           ))}
         </div>
 
@@ -268,7 +430,7 @@ export default function EditorPage() {
             className="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 border border-zinc-200"
             style={{ width: previewWidths[deviceView], height: 'calc(100vh - 7rem)', maxWidth: '100%' }}
           >
-            <iframe src="/preview" className="w-full h-full" title="Theme Preview" />
+            <iframe src={`/preview?pageHandle=${pageHandle}`} className="w-full h-full" title="Theme Preview" />
           </div>
         </div>
       </main>
@@ -291,6 +453,17 @@ export default function EditorPage() {
               onBlockFieldChange={(blockPath, fieldKey, value) => {
                 if (selectedSectionId) updateBlockSetting(selectedSectionId, blockPath, fieldKey, value)
               }}
+              onAddBlock={(blockType) => {
+                if (selectedSectionId) addBlock(selectedSectionId, blockType)
+              }}
+              onRemoveBlock={(blockId) => {
+                if (selectedSectionId) removeBlock(selectedSectionId, blockId)
+              }}
+              onRemoveSection={
+                selectedSectionId && !globalSections.sections[selectedSectionId]
+                  ? () => removeSection(selectedSectionId)
+                  : undefined
+              }
             />
           </div>
         </div>

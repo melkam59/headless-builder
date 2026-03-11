@@ -18,6 +18,7 @@ interface EditorSidebarProps {
   pageSections: StoredSectionsData
   expandedSections: Record<string, boolean>
   toggleSection: (sectionId: string) => void
+  onAddSection: (sectionType: string) => void
 }
 
 const formatLabel = (type: string) =>
@@ -30,6 +31,7 @@ export default function EditorSidebar({
   pageSections,
   expandedSections,
   toggleSection,
+  onAddSection,
 }: EditorSidebarProps) {
   const headerSections = globalSections.order.filter((id) => {
     const s = globalSections.sections[id]
@@ -121,6 +123,26 @@ export default function EditorSidebar({
                   />
                 )
               })}
+            </div>
+            <div className="px-2 mt-2">
+              <select
+                className="w-full text-xs border border-zinc-200 rounded-md bg-zinc-50 py-1.5 px-2 text-zinc-600 focus:outline-none focus:ring-1 focus:ring-violet-500 cursor-pointer"
+                defaultValue=""
+                onChange={(e) => {
+                  if (e.target.value) {
+                    onAddSection(e.target.value)
+                    e.target.value = "" // Reset
+                  }
+                }}
+              >
+                <option value="" disabled>+ Add Section</option>
+                <option value="hero">Hero</option>
+                <option value="imageWithText">Image with Text</option>
+                <option value="collectionList">Collection List</option>
+                <option value="productGrid">Product Grid</option>
+                <option value="testimonials">Testimonials</option>
+                <option value="newsletter">Newsletter</option>
+              </select>
             </div>
           </div>
 
