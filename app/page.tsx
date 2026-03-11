@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
@@ -16,7 +17,7 @@ export default function Home() {
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center">
             <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
+            </svg>Link
           </div>
           <span className="text-lg font-bold tracking-tight">Buildify</span>
         </div>
@@ -26,15 +27,16 @@ export default function Home() {
           <a href="#themes" className="hover:text-white transition-colors">Themes</a>
         </nav>
         <div className="flex items-center gap-3">
-          <Link href="/dashboard" className="text-sm text-zinc-400 hover:text-white transition-colors px-4 py-2">
-            Dashboard
-          </Link>
-          <Link
-            href="/editor"
-            className="text-sm font-medium bg-white text-black px-4 py-2 rounded-full hover:bg-zinc-100 transition-colors"
+          <Button asChild variant="ghost" className="px-4 py-2 text-sm text-zinc-400 hover:text-white hover:bg-white/5">
+            <Link href="/dashboard">Dashboard</Link>
+          </Button>
+          <Button
+            asChild
+            variant="ghost"
+            className="px-4 py-2 text-sm font-medium bg-white text-black rounded-full hover:bg-zinc-100"
           >
-            Start building
-          </Link>
+            <Link href="/editor">Start building</Link>
+          </Button>
         </div>
       </header>
 
@@ -58,21 +60,25 @@ export default function Home() {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center gap-4">
-          <Link
-            href="/editor"
-            className="group flex items-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-semibold px-7 py-3.5 rounded-full transition-all duration-200 shadow-lg shadow-violet-700/30"
+          <Button
+            asChild
+            variant="ghost"
+            className="group h-12 gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-semibold px-7 rounded-full transition-all duration-200 shadow-lg shadow-violet-700/30"
           >
-            Open the Editor
-            <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </Link>
-          <Link
-            href="/dashboard"
-            className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 font-medium px-7 py-3.5 rounded-full transition-all duration-200"
+            <Link href="/editor">
+              Open the Editor
+              <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </Button>
+          <Button
+            asChild
+            variant="ghost"
+            className="h-12 gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 font-medium px-7 rounded-full transition-all duration-200"
           >
-            View Dashboard
-          </Link>
+            <Link href="/dashboard">View Dashboard</Link>
+          </Button>
         </div>
 
         {/* Editor preview mockup */}

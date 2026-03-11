@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { mockProducts } from '@/lib/mock-products'
 import { useCart } from '@/lib/cart-context'
 import { cn } from '@/lib/utils'
@@ -85,9 +86,12 @@ function PageHeader() {
         <a href="/preview" className="text-xl font-bold text-gray-900 tracking-tight">
           My Store
         </a>
-        <button
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={openCart}
-          className="relative p-2 text-gray-600 hover:text-gray-900 transition-colors"
+          className="relative"
+          aria-label="Open cart"
         >
           <ShoppingBag className="w-5 h-5" />
           {totalItems > 0 && (
@@ -95,7 +99,7 @@ function PageHeader() {
               {totalItems > 9 ? '9+' : totalItems}
             </span>
           )}
-        </button>
+        </Button>
       </div>
     </header>
   )
@@ -132,16 +136,22 @@ function ProductDetail({ product }: { product: (typeof mockProducts)[number] }) 
         {product.images.length > 1 && (
           <div className="flex gap-3">
             {product.images.map((img, i) => (
-              <button
+              <Button
                 key={i}
+                type="button"
+                variant="outline"
+                size="icon"
                 onClick={() => setSelectedImage(i)}
                 className={cn(
-                  'w-20 h-20 rounded-lg overflow-hidden border-2 transition-all',
-                  selectedImage === i ? 'border-gray-900' : 'border-transparent hover:border-gray-300',
+                  'w-20 h-20 rounded-lg overflow-hidden border-2 p-0 transition-all',
+                  selectedImage === i
+                    ? 'border-gray-900'
+                    : 'border-transparent hover:border-gray-300',
                 )}
+                aria-label={`Select image ${i + 1}`}
               >
                 <img src={img} alt="" className="w-full h-full object-cover" />
-              </button>
+              </Button>
             ))}
           </div>
         )}
@@ -199,18 +209,22 @@ function ProductDetail({ product }: { product: (typeof mockProducts)[number] }) 
             </p>
             <div className="flex gap-2.5">
               {product.colors.map((color) => (
-                <button
+                <Button
                   key={color.name}
+                  type="button"
+                  variant="outline"
+                  size="icon"
                   title={color.name}
                   onClick={() => setSelectedColor(color.name)}
                   className={cn(
-                    'w-8 h-8 rounded-full border-2 transition-all',
+                    'w-8 h-8 rounded-full border-2 p-0 transition-all',
                     selectedColor === color.name
                       ? 'border-gray-900 scale-110'
                       : 'border-gray-200 hover:border-gray-400',
                     ['#ffffff', '#f9fafb', '#e5e7eb'].includes(color.hex) ? 'ring-1 ring-gray-200' : '',
                   )}
                   style={{ backgroundColor: color.hex }}
+                  aria-label={`Select color ${color.name}`}
                 />
               ))}
             </div>
@@ -225,18 +239,20 @@ function ProductDetail({ product }: { product: (typeof mockProducts)[number] }) 
             </p>
             <div className="flex flex-wrap gap-2">
               {product.sizes.map((size) => (
-                <button
+                <Button
                   key={size}
+                  type="button"
+                  variant={selectedSize === size ? 'default' : 'outline'}
                   onClick={() => setSelectedSize(size)}
                   className={cn(
-                    'px-4 py-2 text-sm font-medium rounded-lg border transition-all',
+                    'px-4 h-9 rounded-lg',
                     selectedSize === size
-                      ? 'bg-gray-900 text-white border-gray-900'
-                      : 'bg-white text-gray-700 border-gray-200 hover:border-gray-900',
+                      ? 'bg-gray-900 text-white hover:bg-gray-900'
+                      : 'text-gray-700 border-gray-200 hover:border-gray-900',
                   )}
                 >
                   {size}
-                </button>
+                </Button>
               ))}
             </div>
           </div>
@@ -246,21 +262,31 @@ function ProductDetail({ product }: { product: (typeof mockProducts)[number] }) 
         <div className="flex items-center gap-4 mb-6">
           <p className="text-sm font-semibold text-gray-900">Quantity</p>
           <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden">
-            <button
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
               onClick={() => setQuantity(Math.max(1, quantity - 1))}
-              className="p-2.5 hover:bg-gray-50 transition-colors"
+              className="rounded-none"
+              aria-label="Decrease quantity"
             >
               <Minus className="w-4 h-4 text-gray-600" />
-            </button>
-            <span className="px-5 py-2 text-sm font-semibold text-gray-900 border-x border-gray-200 min-w-[3rem] text-center">
-              {quantity}
-            </span>
-            <button
+            </Button>
+            <Input
+              readOnly
+              value={quantity}
+              className="w-14 h-9 border-x border-gray-200 rounded-none text-center text-sm font-semibold text-gray-900"
+            />
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
               onClick={() => setQuantity(quantity + 1)}
-              className="p-2.5 hover:bg-gray-50 transition-colors"
+              className="rounded-none"
+              aria-label="Increase quantity"
             >
               <Plus className="w-4 h-4 text-gray-600" />
-            </button>
+            </Button>
           </div>
         </div>
 
