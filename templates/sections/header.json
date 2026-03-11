@@ -26,12 +26,6 @@
       "defaultValue": "left",
       "options": ["left", "center", "right"]
     },
-    "menu": {
-      "type": "menu",
-      "id": "menu",
-      "label": "Menu",
-      "defaultValue": "main-menu"
-    },
     "transparentHeader": {
       "type": "checkbox",
       "id": "transparentHeader",
@@ -44,5 +38,30 @@
       "label": "Sticky Header on Scroll",
       "defaultValue": true
     }
-  }
+  },
+  "blocks": [
+    {
+      "type": "menu_item",
+      "settings": {
+        "label": {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "defaultValue": "Home"
+        },
+        "link": {
+          "type": "text",
+          "id": "link",
+          "label": "Link",
+          "defaultValue": "/"
+        },
+        "openInNewTab": {
+          "type": "checkbox",
+          "id": "openInNewTab",
+          "label": "Open in new tab",
+          "defaultValue": false
+        }
+      }
+    }
+  ]
 }

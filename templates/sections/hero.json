@@ -1,12 +1,37 @@
 {
   "type": "hero",
   "settings": {
-    "layout": {
+    "backgroundImage": {
+      "type": "image",
+      "id": "backgroundImage",
+      "label": "Background Image",
+      "defaultValue": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600&h=900&fit=crop"
+    },
+    "backgroundPosition": {
       "type": "select",
-      "id": "layout",
-      "label": "Layout Style",
-      "options": ["full-width", "contained", "split"],
-      "defaultValue": "full-width"
+      "id": "backgroundPosition",
+      "label": "Background Position",
+      "options": ["center", "top", "bottom", "left", "right"],
+      "defaultValue": "center"
+    },
+    "backgroundFit": {
+      "type": "select",
+      "id": "backgroundFit",
+      "label": "Background Fit",
+      "options": ["cover", "contain"],
+      "defaultValue": "cover"
+    },
+    "overlayColor": {
+      "type": "color",
+      "id": "overlayColor",
+      "label": "Overlay Color",
+      "defaultValue": "#000000"
+    },
+    "overlayOpacity": {
+      "type": "number",
+      "id": "overlayOpacity",
+      "label": "Overlay Opacity (0–100)",
+      "defaultValue": 30
     },
     "height": {
       "type": "select",
@@ -22,155 +47,189 @@
       "options": ["small", "medium", "large"],
       "defaultValue": "medium"
     },
-    "backgroundImage": {
-      "type": "image",
-      "id": "backgroundImage",
-      "label": "Background Image",
-      "defaultValue": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600&h=900&fit=crop"
+    "layout": {
+      "type": "select",
+      "id": "layout",
+      "label": "Container Layout",
+      "options": ["full-width", "contained"],
+      "defaultValue": "contained"
     },
-    "overlayOpacity": {
+    "contentAlignment": {
+      "type": "select",
+      "id": "contentAlignment",
+      "label": "Content Alignment",
+      "options": ["left", "center", "right"],
+      "defaultValue": "center"
+    },
+    "verticalAlignment": {
+      "type": "select",
+      "id": "verticalAlignment",
+      "label": "Vertical Alignment",
+      "options": ["top", "center", "bottom"],
+      "defaultValue": "center"
+    },
+    "contentMaxWidth": {
       "type": "number",
-      "id": "overlayOpacity",
-      "label": "Overlay Opacity (0-100)",
-      "defaultValue": 30
+      "id": "contentMaxWidth",
+      "label": "Content Max Width (px)",
+      "defaultValue": 640
+    },
+    "paddingTop": {
+      "type": "number",
+      "id": "paddingTop",
+      "label": "Padding Top (px)",
+      "defaultValue": 0
+    },
+    "paddingBottom": {
+      "type": "number",
+      "id": "paddingBottom",
+      "label": "Padding Bottom (px)",
+      "defaultValue": 0
     }
   },
   "blocks": [
     {
-      "type": "group",
+      "type": "heading",
       "settings": {
-        "alignment": {
-          "type": "select",
-          "id": "alignment",
-          "label": "Content Alignment",
-          "options": ["left", "center", "right"],
-          "defaultValue": "center"
-        },
-        "verticalAlignment": {
-          "type": "select",
-          "id": "verticalAlignment",
-          "label": "Vertical Alignment",
-          "options": ["top", "center", "bottom"],
-          "defaultValue": "center"
-        },
-        "maxWidth": {
-          "type": "number",
-          "id": "maxWidth",
-          "label": "Max Width (px)",
-          "defaultValue": 600
-        }
-      },
-      "blocks": [
-        {
-          "type": "heading",
-          "settings": {
-            "text": {
-              "type": "text",
-              "id": "text",
-              "label": "Heading Text",
-              "defaultValue": "Discover Your Style"
-            },
-            "size": {
-              "type": "select",
-              "id": "size",
-              "label": "Heading Size",
-              "options": ["small", "medium", "large", "xlarge"],
-              "defaultValue": "xlarge"
-            },
-            "color": {
-              "type": "color",
-              "id": "color",
-              "label": "Text Color",
-              "defaultValue": "#ffffff"
-            }
-          }
-        },
-        {
+        "text": {
           "type": "text",
-          "settings": {
-            "text": {
-              "type": "text",
-              "id": "text",
-              "label": "Subtext",
-              "defaultValue": "Explore our curated collection of premium products"
-            },
-            "size": {
-              "type": "select",
-              "id": "size",
-              "label": "Text Size",
-              "options": ["small", "medium", "large"],
-              "defaultValue": "medium"
-            },
-            "color": {
-              "type": "color",
-              "id": "color",
-              "label": "Text Color",
-              "defaultValue": "#ffffff"
-            }
-          }
+          "id": "text",
+          "label": "Heading Text",
+          "defaultValue": "Discover Your Style"
         },
-        {
-          "type": "buttonGroup",
-          "settings": {
-            "spacing": {
-              "type": "number",
-              "id": "spacing",
-              "label": "Button Spacing (px)",
-              "defaultValue": 16
-            }
-          },
-          "blocks": [
-            {
-              "type": "button",
-              "settings": {
-                "label": {
-                  "type": "text",
-                  "id": "label",
-                  "label": "Button Label",
-                  "defaultValue": "Shop Now"
-                },
-                "link": {
-                  "type": "url",
-                  "id": "link",
-                  "label": "Button Link",
-                  "defaultValue": "/collections/all"
-                },
-                "style": {
-                  "type": "select",
-                  "id": "style",
-                  "label": "Button Style",
-                  "options": ["primary", "secondary", "outline"],
-                  "defaultValue": "primary"
-                }
-              }
-            },
-            {
-              "type": "button",
-              "settings": {
-                "label": {
-                  "type": "text",
-                  "id": "label",
-                  "label": "Button Label",
-                  "defaultValue": "Learn More"
-                },
-                "link": {
-                  "type": "url",
-                  "id": "link",
-                  "label": "Button Link",
-                  "defaultValue": "/pages/about"
-                },
-                "style": {
-                  "type": "select",
-                  "id": "style",
-                  "label": "Button Style",
-                  "options": ["primary", "secondary", "outline"],
-                  "defaultValue": "outline"
-                }
-              }
-            }
-          ]
+        "tag": {
+          "type": "select",
+          "id": "tag",
+          "label": "HTML Tag",
+          "options": ["h1", "h2", "h3"],
+          "defaultValue": "h1"
+        },
+        "size": {
+          "type": "select",
+          "id": "size",
+          "label": "Size",
+          "options": ["small", "medium", "large", "xlarge"],
+          "defaultValue": "xlarge"
+        },
+        "color": {
+          "type": "color",
+          "id": "color",
+          "label": "Color",
+          "defaultValue": "#ffffff"
+        },
+        "fontWeight": {
+          "type": "select",
+          "id": "fontWeight",
+          "label": "Font Weight",
+          "options": ["normal", "medium", "semibold", "bold", "extrabold"],
+          "defaultValue": "bold"
+        },
+        "letterSpacing": {
+          "type": "select",
+          "id": "letterSpacing",
+          "label": "Letter Spacing",
+          "options": ["tight", "normal", "wide"],
+          "defaultValue": "normal"
         }
-      ]
+      }
+    },
+    {
+      "type": "subheading",
+      "settings": {
+        "text": {
+          "type": "text",
+          "id": "text",
+          "label": "Subheading Text",
+          "defaultValue": "Explore our curated collection of premium products"
+        },
+        "size": {
+          "type": "select",
+          "id": "size",
+          "label": "Size",
+          "options": ["small", "medium", "large"],
+          "defaultValue": "medium"
+        },
+        "color": {
+          "type": "color",
+          "id": "color",
+          "label": "Color",
+          "defaultValue": "#f0f0f0"
+        }
+      }
+    },
+    {
+      "type": "button",
+      "settings": {
+        "label": {
+          "type": "text",
+          "id": "label",
+          "label": "Button Label",
+          "defaultValue": "Shop Now"
+        },
+        "link": {
+          "type": "text",
+          "id": "link",
+          "label": "Button Link",
+          "defaultValue": "/collections/all"
+        },
+        "style": {
+          "type": "select",
+          "id": "style",
+          "label": "Style",
+          "options": ["primary", "secondary", "outline", "link"],
+          "defaultValue": "primary"
+        },
+        "size": {
+          "type": "select",
+          "id": "size",
+          "label": "Size",
+          "options": ["sm", "md", "lg"],
+          "defaultValue": "lg"
+        },
+        "openInNewTab": {
+          "type": "checkbox",
+          "id": "openInNewTab",
+          "label": "Open in new tab",
+          "defaultValue": false
+        }
+      }
+    },
+    {
+      "type": "button",
+      "settings": {
+        "label": {
+          "type": "text",
+          "id": "label",
+          "label": "Button Label",
+          "defaultValue": "Learn More"
+        },
+        "link": {
+          "type": "text",
+          "id": "link",
+          "label": "Button Link",
+          "defaultValue": "/pages/about"
+        },
+        "style": {
+          "type": "select",
+          "id": "style",
+          "label": "Style",
+          "options": ["primary", "secondary", "outline", "link"],
+          "defaultValue": "outline"
+        },
+        "size": {
+          "type": "select",
+          "id": "size",
+          "label": "Size",
+          "options": ["sm", "md", "lg"],
+          "defaultValue": "lg"
+        },
+        "openInNewTab": {
+          "type": "checkbox",
+          "id": "openInNewTab",
+          "label": "Open in new tab",
+          "defaultValue": false
+        }
+      }
     }
   ]
 }
