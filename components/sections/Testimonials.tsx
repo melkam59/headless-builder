@@ -4,18 +4,30 @@ import { cn } from '@/lib/utils'
 
 interface Block {
   type: string
-  settings: any
+  settings: Record<string, any>
 }
 
 interface TestimonialsProps {
-  settings: any
+  settings: Record<string, any>
   blocks?: Block[]
 }
 
+/** Read a field value from either stored format (plain value) or schema format ({ defaultValue }) */
+function val(field: any): any {
+  if (field === null || field === undefined) return field
+  if (typeof field === 'object' && 'defaultValue' in field) return field.defaultValue
+  return field
+}
+
 export default function Testimonials({ settings, blocks = [] }: TestimonialsProps) {
-  const heading = settings.heading?.defaultValue || 'What Our Customers Say'
-  const layout = settings.layout?.defaultValue || 'carousel'
-  const backgroundColor = settings.backgroundColor?.defaultValue || '#f9f9f9'
+  const heading = val(settings.heading) ?? 'What Our Customers Say'
+  const layout = val(settings.layout) ?? 'grid'
+  const backgroundColor = val(settings.backgroundColor) ?? '#f9f9f9'
+
+  // Only render testimonial blocks
+  const testimonialBlocks = blocks.filter((b) => b.type === 'testimonial')
+
+  if (testimonialBlocks.length === 0) return null
 
   return (
     <section className="py-16 px-4" style={{ backgroundColor }}>
@@ -25,7 +37,7 @@ export default function Testimonials({ settings, blocks = [] }: TestimonialsProp
         </h2>
 
         <div className={cn('grid gap-8', layout === 'grid' ? 'md:grid-cols-3' : 'md:grid-cols-1')}>
-          {blocks.map((block, index) => (
+          {testimonialBlocks.map((block, index) => (
             <TestimonialCard key={index} block={block} />
           ))}
         </div>
@@ -35,13 +47,14 @@ export default function Testimonials({ settings, blocks = [] }: TestimonialsProp
 }
 
 function TestimonialCard({ block }: { block: Block }) {
-  const quote = block.settings.quote?.defaultValue || ''
-  const name = block.settings.name?.defaultValue || ''
-  const avatar = block.settings.avatar?.defaultValue || ''
-  const rating = block.settings.rating?.defaultValue || 5
+  const quote = val(block.settings.quote) ?? ''
+  const name = val(block.settings.name) ?? ''
+  const avatar = val(block.settings.avatar) ?? ''
+  const rating = Number(val(block.settings.rating) ?? 5)
 
   return (
     <div className="bg-white rounded-lg p-6 shadow-sm">
+      {/* Star rating */}
       <div className="flex mb-4">
         {[...Array(5)].map((_, i) => (
           <svg

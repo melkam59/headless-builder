@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
 interface Block {
@@ -87,9 +88,13 @@ function NestedBlockRenderer({ block }: { block: Block }) {
     const link = block.settings.link?.defaultValue || '#'
 
     return (
-      <a href={link} className="inline-block px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors font-medium">
-        {label}
-      </a>
+      <Button
+        asChild
+        variant="ghost"
+        className="h-11 px-6 bg-black text-white hover:bg-gray-800 font-medium"
+      >
+        <a href={link}>{label}</a>
+      </Button>
     )
   }
 
