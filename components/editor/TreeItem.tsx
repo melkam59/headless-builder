@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { ChevronRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 interface TreeItemProps {
@@ -39,9 +40,13 @@ export default function TreeItem({
         )}
       >
         {hasChildren ? (
-          <button
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-xs"
             onClick={(e) => { e.stopPropagation(); setIsExpanded(!isExpanded); }}
-            className="p-0.5 rounded hover:bg-zinc-200 transition-colors shrink-0"
+            className="hover:bg-zinc-200"
+            aria-label={isExpanded ? 'Collapse item' : 'Expand item'}
           >
             <ChevronRight
               className={cn(
@@ -50,7 +55,7 @@ export default function TreeItem({
                 isSelected && 'text-violet-500'
               )}
             />
-          </button>
+          </Button>
         ) : (
           <span className="w-4 shrink-0" />
         )}

@@ -86,22 +86,40 @@ export default function MenuSettings({ menuItems, onUpdate }: MenuSettingsProps)
           <div key={item.id} className={`rounded-lg border transition-opacity ${item.visible ? 'border-zinc-200' : 'border-zinc-200 opacity-50'}`}>
             {/* Row */}
             <div className="flex items-center gap-2 px-3 py-2.5">
-              <button onClick={() => toggleVisibility(item.id)} className="text-zinc-400 hover:text-zinc-600 transition-colors shrink-0">
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={() => toggleVisibility(item.id)}
+                className="text-zinc-400 hover:text-zinc-600"
+                aria-label={item.visible ? 'Hide item' : 'Show item'}
+              >
                 {item.visible ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
-              </button>
+              </Button>
               <span className="flex-1 text-sm font-medium text-zinc-800 truncate">{item.label}</span>
               {item.submenu && item.submenu.length > 0 && (
                 <Badge variant="secondary" className="text-xs">{item.submenu.length}</Badge>
               )}
-              <button
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
                 onClick={() => setEditingItem(editingItem === item.id ? null : item.id)}
-                className="text-xs text-violet-600 hover:text-violet-700 font-medium"
+                className="text-violet-600 hover:text-violet-700"
+                aria-label={editingItem === item.id ? 'Collapse item' : 'Edit item'}
               >
                 {editingItem === item.id ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-              </button>
-              <button onClick={() => deleteMenuItem(item.id)} className="text-zinc-300 hover:text-red-500 transition-colors">
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={() => deleteMenuItem(item.id)}
+                className="text-zinc-300 hover:text-red-500"
+                aria-label="Delete item"
+              >
                 <Trash2 className="w-3.5 h-3.5" />
-              </button>
+              </Button>
             </div>
 
             {/* Edit panel */}
@@ -130,9 +148,16 @@ export default function MenuSettings({ menuItems, onUpdate }: MenuSettingsProps)
                     <div key={sub.id} className="bg-zinc-50 rounded-md p-2 space-y-1.5">
                       <div className="flex items-center justify-between">
                         <span className="text-xs text-zinc-500">{sub.label}</span>
-                        <button onClick={() => deleteSubmenuItem(item.id, sub.id)} className="text-zinc-300 hover:text-red-500">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => deleteSubmenuItem(item.id, sub.id)}
+                          className="text-zinc-300 hover:text-red-500"
+                          aria-label="Delete submenu item"
+                        >
                           <Trash2 className="w-3 h-3" />
-                        </button>
+                        </Button>
                       </div>
                       <Input value={sub.label} onChange={(e) => updateSubmenuItem(item.id, sub.id, { label: e.target.value })} className="h-6 text-xs" placeholder="Label" />
                       <Input value={sub.link} onChange={(e) => updateSubmenuItem(item.id, sub.id, { link: e.target.value })} className="h-6 text-xs" placeholder="/page" />

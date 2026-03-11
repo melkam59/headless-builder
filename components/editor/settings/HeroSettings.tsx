@@ -65,13 +65,13 @@ export default function HeroSettings({ settings, onUpdate }: HeroSettingsProps) 
             {settings?.overlayOpacity ?? 30}%
           </span>
         </div>
-        <input
+        <Input
           type="range"
           min="0"
           max="100"
           value={settings?.overlayOpacity ?? 30}
           onChange={(e) => onUpdate({ overlayOpacity: parseInt(e.target.value) })}
-          className="w-full h-1.5 rounded-full appearance-none bg-zinc-200 accent-violet-600 cursor-pointer"
+          className="w-full h-2 px-0 py-0 rounded-full bg-zinc-200 accent-violet-600 cursor-pointer"
         />
         <div className="flex justify-between text-xs text-zinc-400">
           <span>0%</span><span>50%</span><span>100%</span>

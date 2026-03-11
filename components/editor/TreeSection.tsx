@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { ChevronRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 interface TreeSectionProps {
@@ -34,9 +35,13 @@ export default function TreeSection({
             : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900'
         )}
       >
-        <button
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon-xs"
           onClick={(e) => { e.stopPropagation(); onToggle(); }}
-          className="p-0.5 rounded hover:bg-zinc-200 transition-colors shrink-0"
+          className="hover:bg-zinc-200"
+          aria-label={isExpanded ? 'Collapse section' : 'Expand section'}
         >
           <ChevronRight
             className={cn(
@@ -45,7 +50,7 @@ export default function TreeSection({
               isSelected && 'text-violet-500'
             )}
           />
-        </button>
+        </Button>
         {icon && <span className={cn('shrink-0', isSelected ? 'text-violet-500' : 'text-zinc-400')}>{icon}</span>}
         <span className="truncate">{title}</span>
       </div>

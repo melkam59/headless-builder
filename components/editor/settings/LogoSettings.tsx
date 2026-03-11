@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
 import { ImageIcon, X } from 'lucide-react';
 import ImageCropper from '../ImageCropper';
 import { cn } from '@/lib/utils';
@@ -80,18 +81,20 @@ export default function LogoSettings({ settings, onUpdate, onUpdatePadding }: Lo
         <Label className="text-sm font-medium text-zinc-800">Position</Label>
         <div className="flex gap-2">
           {(['left', 'center', 'right'] as const).map((pos) => (
-            <button
+            <Button
               key={pos}
+              type="button"
+              variant={settings.position === pos ? 'secondary' : 'outline'}
               onClick={() => onUpdate({ position: pos })}
               className={cn(
-                'flex-1 py-2 text-sm rounded-md border transition-colors font-medium capitalize',
+                'flex-1 py-2 text-sm rounded-md font-medium capitalize',
                 settings.position === pos
-                  ? 'border-violet-500 bg-violet-50 text-violet-700'
+                  ? 'border-violet-500 bg-violet-50 text-violet-700 hover:bg-violet-100'
                   : 'border-zinc-200 text-zinc-600 hover:border-zinc-300 hover:bg-zinc-50'
               )}
             >
               {pos}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
@@ -107,24 +110,34 @@ export default function LogoSettings({ settings, onUpdate, onUpdatePadding }: Lo
             <div className="flex flex-col items-center gap-2">
               <img src={settings.image} alt="Logo" className="max-h-16 mx-auto object-contain" />
               <div className="flex gap-3 text-xs">
-                <label className="text-violet-600 hover:text-violet-700 cursor-pointer font-medium">
-                  Change
-                  <input type="file" accept="image/*" className="hidden" onChange={handleFileUpload} />
-                </label>
-                <button onClick={() => onUpdate({ image: '' })} className="text-red-500 hover:text-red-600 font-medium flex items-center gap-1">
+                <Button asChild variant="ghost" className="h-auto p-0 text-violet-600 hover:text-violet-700">
+                  <label className="cursor-pointer font-medium">
+                    Change
+                    <Input type="file" accept="image/*" className="hidden" onChange={handleFileUpload} />
+                  </label>
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onUpdate({ image: '' })}
+                  className="h-auto p-0 text-red-500 hover:text-red-600"
+                >
                   <X className="w-3 h-3" /> Remove
-                </button>
+                </Button>
               </div>
             </div>
           ) : (
-            <label className="cursor-pointer flex flex-col items-center gap-1.5">
-              <div className="w-10 h-10 rounded-lg bg-zinc-100 flex items-center justify-center">
-                <ImageIcon className="w-5 h-5 text-zinc-400" />
-              </div>
-              <span className="text-sm text-zinc-600 font-medium">Click to upload</span>
-              <span className="text-xs text-zinc-400">PNG, JPG, SVG</span>
-              <input type="file" accept="image/*" className="hidden" onChange={handleFileUpload} />
-            </label>
+            <Button asChild variant="ghost" className="h-auto w-full p-0">
+              <label className="cursor-pointer flex flex-col items-center gap-1.5">
+                <div className="w-10 h-10 rounded-lg bg-zinc-100 flex items-center justify-center">
+                  <ImageIcon className="w-5 h-5 text-zinc-400" />
+                </div>
+                <span className="text-sm text-zinc-600 font-medium">Click to upload</span>
+                <span className="text-xs text-zinc-400">PNG, JPG, SVG</span>
+                <Input type="file" accept="image/*" className="hidden" onChange={handleFileUpload} />
+              </label>
+            </Button>
           )}
         </div>
       </div>
@@ -163,13 +176,13 @@ export default function LogoSettings({ settings, onUpdate, onUpdatePadding }: Lo
         {(['top', 'bottom', 'left', 'right'] as const).map((side) => (
           <div key={side} className="flex items-center gap-3">
             <span className="text-xs text-zinc-500 w-12 capitalize">{side}</span>
-            <input
+            <Input
               type="range"
               min="0"
               max="100"
               value={settings.padding[side]}
               onChange={(e) => onUpdatePadding(side, parseInt(e.target.value))}
-              className="flex-1 h-1.5 rounded-full appearance-none bg-zinc-200 accent-violet-600 cursor-pointer"
+              className="flex-1 h-2 px-0 py-0 rounded-full bg-zinc-200 accent-violet-600 cursor-pointer"
             />
             <div className="flex items-center gap-1 w-16">
               <Input
